@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренды Teez / Teez Трендтері</title>
+    <title>Тренды Teez / Трендтері</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
         :root {
@@ -15,7 +15,7 @@
             --kz-color: #118B11;
             --ru-color: #111111;
             --accent-green: #B4FF87;
-            --gray-text: #888888;
+            --gray-text: #666666;
             --border-radius: 16px;
         }
 
@@ -23,7 +23,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Onest', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
@@ -32,35 +32,25 @@
             padding: 30px 0;
         }
 
-        /* ТЕПЕРЬ ШИРОКИЙ КОНТЕЙНЕР */
         .container {
             width: 100%;
-            max-width: 1200px; /* Было 480px */
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        header {
-            margin-bottom: 40px;
-            text-align: center;
-        }
+        header { margin-bottom: 40px; text-align: center; }
 
-        .logo {
-            font-weight: 800;
-            font-size: 36px;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
-        }
-
-        .logo span:first-child { color: var(--kz-color); }
-        .logo span:last-child { color: var(--ru-color); }
+        .logo { font-weight: 800; font-size: 36px; letter-spacing: -1px; margin-bottom: 12px; }
+        .logo div:first-child { color: var(--kz-color); }
+        .logo div:last-child { color: var(--ru-color); font-size: 24px; opacity: 0.8; }
 
         .date-badge {
             display: inline-block;
             background: var(--card-bg);
             padding: 8px 16px;
             border-radius: 100px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
         }
 
@@ -69,9 +59,13 @@
             font-weight: 800;
             margin-bottom: 20px;
             color: var(--ru-color);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
+        .section-title .kz { color: var(--kz-color); }
+        .section-title .ru { font-size: 16px; font-weight: 600; color: var(--gray-text); }
 
-        /* Блок с графиком */
         .chart-card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -80,30 +74,39 @@
             border: 1px solid #EAEAEA;
         }
 
-        /* Сетка категорий адаптивная */
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 40px;
+        /* Вкладки (Табы) */
+        .tabs-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: none;
         }
+        .tabs-container::-webkit-scrollbar { display: none; }
 
-        .cat-card {
+        .tab-btn {
             background: var(--card-bg);
-            padding: 20px 12px;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #EAEAEA;
+            padding: 10px 20px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            border: 1px solid #EAEAEA;
         }
+        .tab-btn .kz { color: var(--kz-color); font-size: 14px; }
+        .tab-btn .ru { color: var(--gray-text); font-size: 12px; font-weight: 400; }
 
-        .cat-icon { font-size: 32px; }
-        .cat-percent { font-weight: 800; font-size: 24px; color: var(--kz-color); }
+        .tab-btn.active {
+            background: var(--ru-color);
+            border-color: var(--ru-color);
+        }
+        .tab-btn.active .kz, .tab-btn.active .ru { color: #FFF; }
 
-        /* Сетка товаров адаптивная (подстраивается под экран) */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -136,6 +139,12 @@
             font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
+            background: var(--accent-green);
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.2;
         }
 
         .product-info { padding: 20px; display: flex; flex-direction: column; height: 100%;}
@@ -146,13 +155,6 @@
             margin-bottom: 8px;
             color: var(--ru-color);
             line-height: 1.3;
-        }
-
-        .product-category {
-            font-size: 13px;
-            color: var(--gray-text);
-            margin-bottom: 16px;
-            display: block;
         }
 
         .product-price {
@@ -172,10 +174,7 @@
             border-radius: 12px;
             text-decoration: none;
             font-weight: 700;
-            transition: opacity 0.2s;
         }
-
-        .buy-button:hover { opacity: 0.8; }
 
         footer {
             margin-top: 60px;
@@ -187,74 +186,71 @@
 </head>
 <body>
 
-    <div class="container" id="app"></div>
+    <div class="container" id="app">
+        </div>
 
     <script>
         /**
-         * УПРОЩЕННЫЕ ДАННЫЕ ДЛЯ РЕДАКТИРОВАНИЯ
+         * БАЗА ДАННЫХ
          */
         const DATA = {
             header: {
-                title: { kz: "TEEZ ТРЕНДТЕРІ", ru: "ТРЕНДЫ TEEZ" },
                 week: { kz: "15 — 21 сәуір", ru: "15 — 21 апреля" }
             },
             
-            // Данные для графика (например, показы/поиски по дням недели)
-            chartData: {
-                categories: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
-                series: [
-                    { name: 'Просмотры товаров (в тыс.)', data: [12, 19, 15, 25, 32, 40, 38] },
-                    { name: 'Поисковые запросы (в тыс.)', data: [8, 12, 10, 18, 24, 30, 28] }
-                ]
-            },
-
-            categories: [
-                { icon: "📱", kz: "Электроника", ru: "Электроника", percent: "+45%" },
-                { icon: "👗", kz: "Киім", ru: "Одежда", percent: "+30%" },
-                { icon: "🏠", kz: "Үйге", ru: "Для дома", percent: "+15%" },
-                { icon: "💄", kz: "Сұлулық", ru: "Красота", percent: "+22%" }
+            // Аналитика роста категорий (для графика)
+            analytics: [
+                { name: "Кроссовки", kz: "Спорттық аяқ киім", growth: 45 },
+                { name: "Электроника", kz: "Электроника", growth: 38 },
+                { name: "Верхняя одежда", kz: "Сыртқы киім", growth: 25 },
+                { name: "Косметика", kz: "Косметика", growth: 18 }
             ],
 
-            // Названия товаров больше не делим на языки!
+            // Категории для фильтра
+            categories: [
+                { id: "all", kz: "Барлығы", ru: "Все" },
+                { id: "tech", kz: "Электроника", ru: "Электроника" },
+                { id: "clothes", kz: "Киім", ru: "Одежда" }
+            ],
+
+            // Товары (добавлен параметр categoryId для фильтра)
             products: [
                 {
-                    id: 1,
+                    categoryId: "clothes",
                     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop",
                     badge: { kz: "Апта хиті", ru: "Хит недели" },
-                    title: "Nike Air Max 270 React", // Одно название
-                    category: { kz: "Спорттық аяқ киім", ru: "Спортивная обувь" },
+                    title: "Nike Air Max 270 React",
                     price: "49 990 ₸",
-                    link: "https://teez.kz/"
+                    link: "#"
                 },
                 {
-                    id: 2,
+                    categoryId: "tech",
                     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600&auto=format&fit=crop",
                     badge: { kz: "ТОП", ru: "ТОП" },
                     title: "Sony WH-1000XM4 Wireless",
-                    category: { kz: "Электроника", ru: "Электроника" },
                     price: "185 000 ₸",
-                    link: "https://teez.kz/"
+                    link: "#"
                 },
                 {
-                    id: 3,
+                    categoryId: "tech",
                     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop",
-                    badge: { kz: "Жаңа", ru: "Новинка" },
+                    badge: { kz: "Тренд", ru: "Тренд" },
                     title: "Apple Watch Series 9",
-                    category: { kz: "Гаджеттер", ru: "Гаджеты" },
                     price: "240 000 ₸",
-                    link: "https://teez.kz/"
+                    link: "#"
                 },
                 {
-                    id: 4,
-                    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=600&auto=format&fit=crop",
-                    badge: { kz: "Тренд", ru: "Тренд" },
-                    title: "Polaroid OneStep+",
-                    category: { kz: "Фотоаппараттар", ru: "Камеры" },
-                    price: "85 000 ₸",
-                    link: "https://teez.kz/"
+                    categoryId: "clothes",
+                    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop",
+                    badge: { kz: "Жаңа", ru: "Новинка" },
+                    title: "Худи Essentials",
+                    price: "28 000 ₸",
+                    link: "#"
                 }
             ]
         };
+
+        let currentCategory = "all";
 
         function renderDashboard() {
             const app = document.getElementById('app');
@@ -263,8 +259,8 @@
             let html = `
                 <header>
                     <div class="logo">
-                        <span>${DATA.header.title.kz}</span><br>
-                        <span>${DATA.header.title.ru}</span>
+                        <div>TEEZ ТРЕНДТЕРІ</div>
+                        <div>ТРЕНДЫ TEEZ</div>
                     </div>
                     <div class="date-badge">
                         <span style="color: var(--kz-color)">${DATA.header.week.kz}</span> | 
@@ -273,92 +269,121 @@
                 </header>
             `;
 
-            // 2. Блок с графиком
+            // 2. Блок с графиком аналитики
             html += `
-                <div class="section-title">Динамика запросов / Сұраныс динамикасы</div>
+                <div class="section-title">
+                    <span class="kz">Сұраныстың өсуі (%)</span>
+                    <span class="ru">Рост спроса по категориям (%)</span>
+                </div>
                 <div class="chart-card">
-                    <div id="trendsChart"></div>
+                    <div id="analyticsChart"></div>
                 </div>
             `;
 
-            // 3. Категории
-            html += `<div class="section-title">Растущие ниши / Өсіп келе жатқан тауарлар</div>`;
-            html += `<div class="categories-grid">`;
+            // 3. Товары и фильтры
+            html += `
+                <div class="section-title" style="margin-top: 40px;">
+                    <span class="kz">Үздік тауарлар</span>
+                    <span class="ru">Топ товары</span>
+                </div>
+            `;
+
+            // Рендер вкладок
+            html += `<div class="tabs-container">`;
             DATA.categories.forEach(cat => {
+                const isActive = cat.id === currentCategory ? 'active' : '';
                 html += `
-                    <div class="cat-card">
-                        <div class="cat-icon">${cat.icon}</div>
-                        <div class="cat-percent">${cat.percent}</div>
-                        <div style="color: var(--kz-color); font-size: 14px; font-weight: 600;">${cat.kz}</div>
-                        <div style="color: var(--gray-text); font-size: 12px;">${cat.ru}</div>
+                    <div class="tab-btn ${isActive}" onclick="filterProducts('${cat.id}')">
+                        <span class="kz">${cat.kz}</span>
+                        <span class="ru">${cat.ru}</span>
                     </div>
                 `;
             });
             html += `</div>`;
 
-            // 4. Товары
-            html += `<div class="section-title">Топ товары / Үздік тауарлар</div>`;
-            html += `<main class="products-grid">`;
-            DATA.products.forEach(prod => {
-                html += `
-                    <div class="product-card">
-                        <div class="product-image" style="background-image: url('${prod.image}')">
-                            <div class="badge" style="background: var(--accent-green); color: #000;">
-                                ${prod.badge.kz} / ${prod.badge.ru}
-                            </div>
-                        </div>
-                        <div class="product-info">
-                            <div class="product-title">${prod.title}</div>
-                            <span class="product-category">
-                                <span style="color: var(--kz-color)">${prod.category.kz}</span> • 
-                                <span>${prod.category.ru}</span>
-                            </span>
-                            <div class="product-price">${prod.price}</div>
-                            <a href="${prod.link}" class="buy-button">Көру / Посмотреть</a>
-                        </div>
-                    </div>
-                `;
-            });
+            // Рендер сетки товаров
+            html += `<main class="products-grid" id="productsGrid">`;
+            html += generateProductsHTML(DATA.products);
             html += `</main>`;
 
-            // 5. Футер
+            // Футер
             html += `
                 <footer>
-                    <div style="color: var(--kz-color); font-size: 13px; font-weight: 600; margin-bottom: 4px;">© 2024 Teez Business. Барлық құқықтар қорғалған.</div>
+                    <div style="color: var(--kz-color); font-size: 13px; font-weight: 600;">© 2024 Teez Business. Барлық құқықтар қорғалған.</div>
                     <div style="color: var(--gray-text); font-size: 12px;">Все права защищены.</div>
                 </footer>
             `;
 
             app.innerHTML = html;
-
-            // Отрисовка графика после рендера HTML
             renderChart();
         }
 
-        // Настройка и запуск графика
+        // Функция фильтрации товаров
+        window.filterProducts = function(categoryId) {
+            currentCategory = categoryId;
+            
+            // Обновляем визуальное состояние кнопок
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Фильтруем данные
+            const filteredProducts = categoryId === 'all' 
+                ? DATA.products 
+                : DATA.products.filter(p => p.categoryId === categoryId);
+            
+            // Обновляем сетку
+            document.getElementById('productsGrid').innerHTML = generateProductsHTML(filteredProducts);
+        }
+
+        function generateProductsHTML(products) {
+            if (products.length === 0) return `<div style="padding: 20px; color: var(--gray-text);">Тауарлар табылмады / Нет товаров</div>`;
+            
+            return products.map(prod => `
+                <div class="product-card">
+                    <div class="product-image" style="background-image: url('${prod.image}')">
+                        <div class="badge">
+                            <span>${prod.badge.kz}</span>
+                            <span style="font-size: 9px; font-weight: 400;">${prod.badge.ru}</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-title">${prod.title}</div>
+                        <div class="product-price">${prod.price}</div>
+                        <a href="${prod.link}" class="buy-button">Көру / Посмотреть</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Настройка графика
         function renderChart() {
             var options = {
-                series: DATA.chartData.series,
+                series: [{
+                    name: 'Рост спроса (%)',
+                    data: DATA.analytics.map(item => item.growth)
+                }],
                 chart: {
-                    type: 'area',
-                    height: 300,
+                    type: 'bar',
+                    height: 350,
                     toolbar: { show: false },
-                    fontFamily: 'Onest, sans-serif'
+                    fontFamily: 'Inter, sans-serif'
                 },
-                colors: ['#B4FF87', '#111111'],
-                dataLabels: { enabled: false },
-                stroke: { curve: 'smooth', width: 2 },
+                colors: ['#B4FF87'],
+                plotOptions: {
+                    bar: { borderRadius: 6, horizontal: true, distributed: true }
+                },
+                dataLabels: {
+                    enabled: true,
+                    formatter: function (val) { return "+" + val + "%" },
+                    style: { colors: ['#000'], fontWeight: 800 }
+                },
                 xaxis: {
-                    categories: DATA.chartData.categories,
+                    categories: DATA.analytics.map(item => item.name),
                 },
-                fill: {
-                    type: 'gradient',
-                    gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] }
-                },
-                legend: { position: 'top', horizontalAlign: 'left' }
+                legend: { show: false }
             };
 
-            var chart = new ApexCharts(document.querySelector("#trendsChart"), options);
+            var chart = new ApexCharts(document.querySelector("#analyticsChart"), options);
             chart.render();
         }
 
