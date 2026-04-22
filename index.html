@@ -7,13 +7,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <style>
         :root {
-            --bg-color: #FFFFFF; /* Белый фон */
-            --card-bg: #F5F5F5; /* Светло-серые карточки */
-            --kz-color: #118B11; /* Темно-зеленый для читаемости на белом */
-            --ru-color: #000000; /* Черный для читаемости на белом */
-            --accent-green: #B4FF87; /* Оригинальный салатовый для плашек/кнопок */
+            --bg-color: #FFFFFF;
+            --card-bg: #F8F9FA;
+            --kz-color: #118B11;
+            --ru-color: #111111;
+            --accent-green: #B4FF87;
             --gray-text: #888888;
             --border-radius: 16px;
         }
@@ -28,29 +29,27 @@
         body {
             background-color: var(--bg-color);
             color: var(--ru-color);
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px 0;
+            padding: 30px 0;
         }
 
+        /* ТЕПЕРЬ ШИРОКИЙ КОНТЕЙНЕР */
         .container {
             width: 100%;
-            max-width: 480px;
-            padding: 0 16px;
+            max-width: 1200px; /* Было 480px */
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        /* Шапка */
         header {
-            margin-bottom: 32px;
+            margin-bottom: 40px;
             text-align: center;
         }
 
         .logo {
             font-weight: 800;
-            font-size: 28px;
+            font-size: 36px;
             letter-spacing: -1px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .logo span:first-child { color: var(--kz-color); }
@@ -59,44 +58,56 @@
         .date-badge {
             display: inline-block;
             background: var(--card-bg);
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 100px;
-            font-size: 14px;
+            font-size: 15px;
+            font-weight: 600;
         }
 
-        /* Категории */
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--ru-color);
+        }
+
+        /* Блок с графиком */
+        .chart-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 40px;
+            border: 1px solid #EAEAEA;
+        }
+
+        /* Сетка категорий адаптивная */
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
         }
 
         .cat-card {
             background: var(--card-bg);
-            padding: 16px 8px;
+            padding: 20px 12px;
             border-radius: 12px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            border: 1px solid #EAEAEA;
         }
 
-        .cat-icon {
-            font-size: 28px;
-        }
+        .cat-icon { font-size: 32px; }
+        .cat-percent { font-weight: 800; font-size: 24px; color: var(--kz-color); }
 
-        .cat-percent {
-            font-weight: 800;
-            font-size: 20px;
-            color: var(--kz-color);
-        }
-
-        /* Карточки товаров */
+        /* Сетка товаров адаптивная (подстраивается под экран) */
         .products-grid {
             display: grid;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
         }
 
         .product-card {
@@ -105,6 +116,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            border: 1px solid #EAEAEA;
         }
 
         .product-image {
@@ -119,50 +131,36 @@
             position: absolute;
             top: 12px;
             left: 12px;
-            padding: 4px 8px;
+            padding: 6px 10px;
             border-radius: 6px;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
         }
 
-        .product-info {
-            padding: 16px;
-        }
-
-        .lang-pair {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            margin-bottom: 8px;
-        }
-
-        .kz-text {
-            color: var(--kz-color);
+        .product-info { padding: 20px; display: flex; flex-direction: column; height: 100%;}
+        
+        .product-title {
+            font-size: 18px;
             font-weight: 600;
-            font-size: 16px;
-            line-height: 1.2;
-        }
-
-        .ru-text {
+            margin-bottom: 8px;
             color: var(--ru-color);
-            font-weight: 400;
-            font-size: 13px;
-            opacity: 0.9;
+            line-height: 1.3;
         }
 
         .product-category {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--gray-text);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             display: block;
         }
 
         .product-price {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--ru-color);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            margin-top: auto;
         }
 
         .buy-button {
@@ -173,18 +171,17 @@
             padding: 14px;
             border-radius: 12px;
             text-decoration: none;
-            font-weight: 600;
-            transition: transform 0.2s;
+            font-weight: 700;
+            transition: opacity 0.2s;
         }
 
-        .buy-button:active {
-            transform: scale(0.97);
-        }
+        .buy-button:hover { opacity: 0.8; }
 
         footer {
-            margin-top: 40px;
+            margin-top: 60px;
             text-align: center;
-            padding-bottom: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #EAEAEA;
         }
     </style>
 </head>
@@ -194,24 +191,37 @@
 
     <script>
         /**
-         * ДАННЫЕ ДЛЯ РЕДАКТИРОВАНИЯ
+         * УПРОЩЕННЫЕ ДАННЫЕ ДЛЯ РЕДАКТИРОВАНИЯ
          */
         const DATA = {
             header: {
                 title: { kz: "TEEZ ТРЕНДТЕРІ", ru: "ТРЕНДЫ TEEZ" },
                 week: { kz: "15 — 21 сәуір", ru: "15 — 21 апреля" }
             },
+            
+            // Данные для графика (например, показы/поиски по дням недели)
+            chartData: {
+                categories: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'],
+                series: [
+                    { name: 'Просмотры товаров (в тыс.)', data: [12, 19, 15, 25, 32, 40, 38] },
+                    { name: 'Поисковые запросы (в тыс.)', data: [8, 12, 10, 18, 24, 30, 28] }
+                ]
+            },
+
             categories: [
                 { icon: "📱", kz: "Электроника", ru: "Электроника", percent: "+45%" },
                 { icon: "👗", kz: "Киім", ru: "Одежда", percent: "+30%" },
-                { icon: "🏠", kz: "Үйге", ru: "Для дома", percent: "+15%" }
+                { icon: "🏠", kz: "Үйге", ru: "Для дома", percent: "+15%" },
+                { icon: "💄", kz: "Сұлулық", ru: "Красота", percent: "+22%" }
             ],
+
+            // Названия товаров больше не делим на языки!
             products: [
                 {
                     id: 1,
                     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop",
                     badge: { kz: "Апта хиті", ru: "Хит недели" },
-                    title: { kz: "Nike Air Max кроссовкалары", ru: "Кроссовки Nike Air Max" },
+                    title: "Nike Air Max 270 React", // Одно название
                     category: { kz: "Спорттық аяқ киім", ru: "Спортивная обувь" },
                     price: "49 990 ₸",
                     link: "https://teez.kz/"
@@ -220,26 +230,32 @@
                     id: 2,
                     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600&auto=format&fit=crop",
                     badge: { kz: "ТОП", ru: "ТОП" },
-                    title: { kz: "Сымсыз құлаққаптар", ru: "Беспроводные наушники" },
+                    title: "Sony WH-1000XM4 Wireless",
                     category: { kz: "Электроника", ru: "Электроника" },
-                    price: "18 500 ₸",
+                    price: "185 000 ₸",
                     link: "https://teez.kz/"
                 },
                 {
                     id: 3,
                     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop",
                     badge: { kz: "Жаңа", ru: "Новинка" },
-                    title: { kz: "Ақылды сағат", ru: "Смарт-часы" },
+                    title: "Apple Watch Series 9",
                     category: { kz: "Гаджеттер", ru: "Гаджеты" },
-                    price: "24 000 ₸",
+                    price: "240 000 ₸",
+                    link: "https://teez.kz/"
+                },
+                {
+                    id: 4,
+                    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=600&auto=format&fit=crop",
+                    badge: { kz: "Тренд", ru: "Тренд" },
+                    title: "Polaroid OneStep+",
+                    category: { kz: "Фотоаппараттар", ru: "Камеры" },
+                    price: "85 000 ₸",
                     link: "https://teez.kz/"
                 }
             ]
         };
 
-        /**
-         * ФУНКЦИЯ РЕНДЕРИНГА
-         */
         function renderDashboard() {
             const app = document.getElementById('app');
             
@@ -257,21 +273,31 @@
                 </header>
             `;
 
-            // 2. Категории с процентами и иконками
+            // 2. Блок с графиком
+            html += `
+                <div class="section-title">Динамика запросов / Сұраныс динамикасы</div>
+                <div class="chart-card">
+                    <div id="trendsChart"></div>
+                </div>
+            `;
+
+            // 3. Категории
+            html += `<div class="section-title">Растущие ниши / Өсіп келе жатқан тауарлар</div>`;
             html += `<div class="categories-grid">`;
             DATA.categories.forEach(cat => {
                 html += `
                     <div class="cat-card">
                         <div class="cat-icon">${cat.icon}</div>
                         <div class="cat-percent">${cat.percent}</div>
-                        <div style="color: var(--kz-color); font-size: 12px; font-weight: 600; line-height: 1.1;">${cat.kz}</div>
-                        <div style="color: var(--ru-color); font-size: 10px; opacity: 0.8;">${cat.ru}</div>
+                        <div style="color: var(--kz-color); font-size: 14px; font-weight: 600;">${cat.kz}</div>
+                        <div style="color: var(--gray-text); font-size: 12px;">${cat.ru}</div>
                     </div>
                 `;
             });
             html += `</div>`;
 
-            // 3. Товары
+            // 4. Товары
+            html += `<div class="section-title">Топ товары / Үздік тауарлар</div>`;
             html += `<main class="products-grid">`;
             DATA.products.forEach(prod => {
                 html += `
@@ -282,13 +308,10 @@
                             </div>
                         </div>
                         <div class="product-info">
-                            <div class="lang-pair">
-                                <span class="kz-text">${prod.title.kz}</span>
-                                <span class="ru-text">${prod.title.ru}</span>
-                            </div>
+                            <div class="product-title">${prod.title}</div>
                             <span class="product-category">
                                 <span style="color: var(--kz-color)">${prod.category.kz}</span> • 
-                                <span style="color: var(--ru-color)">${prod.category.ru}</span>
+                                <span>${prod.category.ru}</span>
                             </span>
                             <div class="product-price">${prod.price}</div>
                             <a href="${prod.link}" class="buy-button">Көру / Посмотреть</a>
@@ -298,17 +321,45 @@
             });
             html += `</main>`;
 
-            // 4. Футер
+            // 5. Футер
             html += `
                 <footer>
-                    <div class="lang-pair" style="align-items: center;">
-                        <span class="kz-text" style="font-size: 12px;">© 2024 Teez Business. Барлық құқықтар қорғалған.</span>
-                        <span class="ru-text" style="font-size: 11px;">Все права защищены.</span>
-                    </div>
+                    <div style="color: var(--kz-color); font-size: 13px; font-weight: 600; margin-bottom: 4px;">© 2024 Teez Business. Барлық құқықтар қорғалған.</div>
+                    <div style="color: var(--gray-text); font-size: 12px;">Все права защищены.</div>
                 </footer>
             `;
 
             app.innerHTML = html;
+
+            // Отрисовка графика после рендера HTML
+            renderChart();
+        }
+
+        // Настройка и запуск графика
+        function renderChart() {
+            var options = {
+                series: DATA.chartData.series,
+                chart: {
+                    type: 'area',
+                    height: 300,
+                    toolbar: { show: false },
+                    fontFamily: 'Onest, sans-serif'
+                },
+                colors: ['#B4FF87', '#111111'],
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 2 },
+                xaxis: {
+                    categories: DATA.chartData.categories,
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.1, stops: [0, 90, 100] }
+                },
+                legend: { position: 'top', horizontalAlign: 'left' }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#trendsChart"), options);
+            chart.render();
         }
 
         document.addEventListener('DOMContentLoaded', renderDashboard);
