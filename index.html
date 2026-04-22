@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="kk-KZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренды Teez / Teez Трендтері</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0A0A0A;
+            --card-bg: #161616;
+            --kz-color: #B4FF87;
+            --ru-color: #FFFFFF;
+            --gray-text: #888888;
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Onest', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--ru-color);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px; /* Ограничение по ТЗ */
+            padding: 0 16px;
+        }
+
+        /* Шапка */
+        header {
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 28px;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+        }
+
+        .logo span:first-child { color: var(--kz-color); }
+        .logo span:last-child { color: var(--ru-color); }
+
+        .date-badge {
+            display: inline-block;
+            background: var(--card-bg);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 14px;
+        }
+
+        /* Категории */
+        .categories-nav {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 16px;
+            scrollbar-width: none;
+            margin-bottom: 24px;
+        }
+        .categories-nav::-webkit-scrollbar { display: none; }
+
+        .cat-chip {
+            background: var(--card-bg);
+            padding: 10px 16px;
+            border-radius: 12px;
+            white-space: nowrap;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        /* Карточки товаров */
+        .products-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #222;
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        /* Стилизация двуязычного текста */
+        .lang-pair {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 12px;
+        }
+
+        .kz-text {
+            color: var(--kz-color);
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1.2;
+        }
+
+        .ru-text {
+            color: var(--ru-color);
+            font-weight: 400;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: var(--gray-text);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .buy-button {
+            display: block;
+            background: var(--ru-color);
+            color: #000;
+            text-align: center;
+            padding: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .buy-button:active {
+            transform: scale(0.97);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app">
+        </div>
+
+    <script>
+        /**
+         * ДАННЫЕ ДЛЯ РЕДАКТИРОВАНИЯ
+         */
+        const DATA = {
+            header: {
+                title: { kz: "TEEZ ТРЕНДТЕРІ", ru: "ТРЕНДЫ TEEZ" },
+                week: { kz: "15 — 21 сәуір", ru: "15 — 21 апреля" }
+            },
+            categories: [
+                { kz: "Барлығы", ru: "Все" },
+                { kz: "Электроника", ru: "Электроника" },
+                { kz: "Киім", ru: "Одежда" },
+                { kz: "Үйге арналған", ru: "Для дома" }
+            ],
+            products: [
+                {
+                    id: 1,
+                    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop",
+                    badge: { kz: "Апта хиті", ru: "Хит недели" },
+                    title: { kz: "Nike Air Max кроссовкалары", ru: "Кроссовки Nike Air Max" },
+                    category: { kz: "Спорттық аяқ киім", ru: "Спортивная обувь" },
+                    link: "https://teez.kz/"
+                },
+                {
+                    id: 2,
+                    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=600&auto=format&fit=crop",
+                    badge: { kz: "ТОП", ru: "ТОП" },
+                    title: { kz: "Сымсыз құлаққаптар", ru: "Беспроводные наушники" },
+                    category: { kz: "Электроника", ru: "Электроника" },
+                    link: "https://teez.kz/"
+                },
+                {
+                    id: 3,
+                    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop",
+                    badge: { kz: "Жаңа", ru: "Новинка" },
+                    title: { kz: "Ақылды сағат", ru: "Смарт-часы" },
+                    category: { kz: "Гаджеттер", ru: "Гаджеты" },
+                    link: "https://teez.kz/"
+                }
+            ]
+        };
+
+        /**
+         * ФУНКЦИЯ РЕНДЕРИНГА
+         */
+        function renderDashboard() {
+            const app = document.getElementById('app');
+            
+            // 1. Рендерим шапку
+            let html = `
+                <header>
+                    <div class="logo">
+                        <span>${DATA.header.title.kz}</span><br>
+                        <span>${DATA.header.title.ru}</span>
+                    </div>
+                    <div class="date-badge">
+                        <span style="color: var(--kz-color)">${DATA.header.week.kz}</span> | 
+                        <span style="color: var(--ru-color)">${DATA.header.week.ru}</span>
+                    </div>
+                </header>
+            `;
+
+            // 2. Рендерим категории
+            html += `<nav class="categories-nav">`;
+            DATA.categories.forEach(cat => {
+                html += `
+                    <div class="cat-chip">
+                        <div style="color: var(--kz-color); font-size: 13px; font-weight: 600;">${cat.kz}</div>
+                        <div style="color: var(--ru-color); font-size: 11px;">${cat.ru}</div>
+                    </div>
+                `;
+            });
+            html += `</nav>`;
+
+            // 3. Рендерим сетку товаров
+            html += `<main class="products-grid">`;
+            DATA.products.forEach(prod => {
+                html += `
+                    <div class="product-card">
+                        <div class="product-image" style="background-image: url('${prod.image}')">
+                            <div class="badge" style="background: var(--kz-color); color: #000;">
+                                ${prod.badge.kz} / ${prod.badge.ru}
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="lang-pair">
+                                <span class="kz-text">${prod.title.kz}</span>
+                                <span class="ru-text">${prod.title.ru}</span>
+                            </div>
+                            <span class="product-category">
+                                <span style="color: var(--kz-color)">${prod.category.kz}</span> • 
+                                <span style="color: var(--ru-color)">${prod.category.ru}</span>
+                            </span>
+                            <a href="${prod.link}" class="buy-button">Көру / Посмотреть</a>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</main>`;
+
+            // 4. Футер
+            html += `
+                <footer>
+                    <div class="lang-pair" style="align-items: center;">
+                        <span class="kz-text" style="font-size: 12px;">© 2024 Teez Business. Барлық құқықтар қорғалған.</span>
+                        <span class="ru-text" style="font-size: 11px;">Все права защищены.</span>
+                    </div>
+                </footer>
+            `;
+
+            app.innerHTML = html;
+        }
+
+        // Запуск
+        document.addEventListener('DOMContentLoaded', renderDashboard);
+    </script>
+</body>
+</html>
