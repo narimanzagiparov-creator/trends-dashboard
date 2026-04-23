@@ -23,10 +23,10 @@
 
         body { background-color: var(--bg-color); color: var(--ru-color); padding: 30px 0; }
 
-        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 0 20px; }
 
         /* Шапка и переключатель периода */
-        header { margin-bottom: 40px; text-align: center; }
+        header { margin-bottom: 32px; text-align: center; }
         .logo { font-weight: 800; font-size: 36px; letter-spacing: -1px; margin-bottom: 20px; line-height: 1.1; }
         .logo div:first-child { color: var(--kz-color); }
         .logo div:last-child { color: var(--ru-color); font-size: 24px; opacity: 0.8; }
@@ -56,73 +56,111 @@
         .date-display .kz { color: var(--kz-color); }
 
         /* Заголовки секций */
-        .section-title { font-size: 24px; font-weight: 800; margin-bottom: 20px; display: flex; flex-direction: column; gap: 4px; }
+        .section-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; margin-top: 32px; display: flex; flex-direction: column; gap: 4px; }
         .section-title .kz { color: var(--kz-color); }
-        .section-title .ru { font-size: 16px; font-weight: 600; color: var(--gray-text); }
+        .section-title .ru { font-size: 14px; font-weight: 600; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px;}
 
-        /* Аналитика (2 колонки) */
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-        @media (max-width: 768px) { .analytics-grid { grid-template-columns: 1fr; } }
-
+        /* Аналитика (Один широкий блок) */
         .stat-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 24px;
+            padding: 20px;
         }
-        .stat-title { font-weight: 800; font-size: 18px; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
-        .stat-title .kz { color: var(--kz-color); display: block; margin-bottom: 2px; }
-        .stat-title .ru { color: var(--ru-color); }
-
         .stat-list { list-style: none; }
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
+        .stat-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
         .stat-name { display: flex; flex-direction: column; gap: 2px; }
         .stat-name .kz { color: var(--kz-color); font-weight: 600; font-size: 15px;}
         .stat-name .ru { color: var(--ru-color); font-size: 13px; }
-        .stat-value { font-weight: 800; font-size: 18px; color: var(--kz-color); background: rgba(180, 255, 135, 0.2); padding: 4px 10px; border-radius: 8px; }
+        .stat-value { font-weight: 800; font-size: 16px; color: var(--kz-color); background: rgba(180, 255, 135, 0.2); padding: 4px 10px; border-radius: 8px; }
+
+        /* Список товаров */
+        .products-list { display: flex; flex-direction: column; gap: 10px; }
         
-        .search-item { padding: 12px 0; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 16px; display: flex; gap: 12px;}
-        .search-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .search-rank { color: var(--gray-text); font-weight: 800; }
-
-        /* Вкладки товаров */
-        .tabs-container {
-            display: flex; gap: 12px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none;
+        .product-card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            padding: 10px;
+            border: 1px solid var(--border-color); 
+            gap: 14px;
         }
-        .tabs-container::-webkit-scrollbar { display: none; }
-        .tab-btn {
-            background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 100px;
-            cursor: pointer; display: flex; flex-direction: column; align-items: center; transition: all 0.2s; white-space: nowrap;
+
+        .product-image { 
+            width: 60px; 
+            height: 60px; 
+            border-radius: 8px; 
+            background-size: cover; 
+            background-position: center; 
+            position: relative; 
+            flex-shrink: 0;
+            background-color: #EFEFEF; /* Цвет заглушки, если нет фото */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .tab-btn .kz { color: var(--kz-color); font-size: 14px; font-weight: 600; }
-        .tab-btn .ru { color: var(--gray-text); font-size: 12px; }
-        .tab-btn.active { background: var(--ru-color); border-color: var(--ru-color); }
-        .tab-btn.active .kz, .tab-btn.active .ru { color: #FFF; }
+        
+        /* Текст внутри заглушки (если нет картинки) */
+        .product-image::after {
+            content: "TEEZ";
+            font-size: 10px;
+            font-weight: 800;
+            color: #CCC;
+            opacity: 0; /* Скрыто по умолчанию */
+        }
+        .product-image.no-image::after { opacity: 1; }
 
-        /* Сетка товаров */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-        .product-card { background: var(--card-bg); border-radius: var(--border-radius); overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-color); }
-        .product-image { width: 100%; aspect-ratio: 1 / 1; background-size: cover; background-position: center; position: relative; }
-        .product-rank { position: absolute; top: 12px; left: 12px; background: var(--ru-color); color: #FFF; font-weight: 800; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 14px;}
-        .product-info { padding: 16px; display: flex; flex-direction: column; height: 100%; }
-        .product-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--ru-color); line-height: 1.3; }
-        .product-price { font-size: 20px; font-weight: 800; color: var(--ru-color); margin-bottom: 16px; margin-top: auto; }
-        .buy-button { display: block; background: var(--accent-green); color: #000; text-align: center; padding: 12px; border-radius: 10px; text-decoration: none; font-weight: 700; transition: opacity 0.2s; }
-        .buy-button:hover { opacity: 0.8; }
+        .product-rank { 
+            position: absolute; 
+            top: -6px; 
+            left: -6px; 
+            background: var(--ru-color); 
+            color: #FFF; 
+            font-weight: 800; 
+            width: 22px; 
+            height: 22px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 6px; 
+            font-size: 11px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
 
-        footer { margin-top: 60px; text-align: center; padding-top: 20px; border-top: 1px solid var(--border-color); }
+        .product-info { 
+            display: flex; 
+            flex-direction: column; 
+            flex-grow: 1;
+            justify-content: center;
+            min-width: 0; /* Фикс для обрезки текста */
+        }
+
+        .product-title { 
+            font-size: 14px; 
+            font-weight: 600; 
+            color: var(--ru-color); 
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price { font-size: 15px; font-weight: 800; color: var(--kz-color); }
+
+        .buy-button { 
+            background: var(--accent-green); 
+            color: #000; 
+            padding: 8px 14px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        footer { margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
@@ -130,67 +168,39 @@
     <div class="container" id="app"></div>
 
     <script>
-        /**
-         * 📦 БАЗА ДАННЫХ (РАЗДЕЛЕНА НА НЕДЕЛЮ И МЕСЯЦ)
-         */
         const DATA = {
-            categories: [
-                { id: "all", kz: "Барлығы", ru: "Все" },
-                { id: "tech", kz: "Электроника", ru: "Электроника" },
-                { id: "clothes", kz: "Киім", ru: "Одежда" }
-            ],
-
-            // 📅 ДАННЫЕ ЗА НЕДЕЛЮ
+            // 📅 НЕДЕЛЯ
             week: {
                 dateStr: { kz: "15 — 21 сәуір", ru: "15 — 21 апреля" },
                 growingNiches: [
                     { kz: "Күннен қорғайтын көзілдірік", ru: "Солнцезащитные очки", growth: "+145%" },
-                    { kz: "Сымсыз құлаққаптар", ru: "Беспроводные наушники", growth: "+80%" },
-                    { kz: "Жүгіруге арналған кроссовка", ru: "Кроссовки для бега", growth: "+55%" }
-                ],
-                topSearches: [
-                    "iphone 15 pro max",
-                    "кеды женские белые",
-                    "повербанк",
-                    "футболка оверсайз",
-                    " Dyson стайлер"
+                    { kz: "Сымсыз құлаққаптар", ru: "Беспроводные наушники", growth: "+80%" }
                 ],
                 products: [
-                    // Добавляй до 10 товаров в каждую категорию
-                    { categoryId: "clothes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400", title: "Nike Air Max 270", price: "49 990 ₸", link: "#" },
-                    { categoryId: "clothes", image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=400", title: "Худи Essentials", price: "28 000 ₸", link: "#" },
-                    { categoryId: "tech", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=400", title: "Sony WH-1000XM4", price: "185 000 ₸", link: "#" },
-                    { categoryId: "tech", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400", title: "Apple Watch Series 9", price: "240 000 ₸", link: "#" }
+                    { image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=200", title: "Nike Air Max 270", price: "49 990 ₸" },
+                    { image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=200", title: "Худи Essentials", price: "28 000 ₸" },
+                    { image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=200", title: "Sony WH-1000XM4", price: "185 000 ₸" },
+                    { image: "", title: "Товар без фотографии", price: "12 000 ₸" }, // <-- Пример товара без картинки
+                    { image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=200", title: "Летнее женское платье", price: "15 500 ₸" }
                 ]
             },
 
-            // 📅 ДАННЫЕ ЗА МЕСЯЦ
+            // 📅 МЕСЯЦ
             month: {
                 dateStr: { kz: "Сәуір 2024", ru: "Апрель 2024" },
                 growingNiches: [
                     { kz: "Жазғы аяқ киім", ru: "Летняя обувь", growth: "+210%" },
-                    { kz: "Демисезонды курткалар", ru: "Демисезонные куртки", growth: "+120%" },
                     { kz: "Ақылды сағаттар", ru: "Умные часы", growth: "+95%" }
                 ],
-                topSearches: [
-                    "куртка весенняя женская",
-                    "airpods pro 2",
-                    "кроссовки nike",
-                    "сумка шоппер",
-                    "робот пылесос"
-                ],
                 products: [
-                    { categoryId: "tech", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400", title: "Apple Watch Series 9", price: "240 000 ₸", link: "#" },
-                    { categoryId: "clothes", image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=400", title: "Платье летнее", price: "15 500 ₸", link: "#" },
-                    { categoryId: "tech", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=400", title: "Sony WH-1000XM4", price: "185 000 ₸", link: "#" },
-                    { categoryId: "clothes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400", title: "Nike Air Max 270", price: "49 990 ₸", link: "#" }
+                    { image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=200", title: "Sony WH-1000XM4", price: "185 000 ₸" },
+                    { image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=200", title: "Apple Watch Series 9", price: "240 000 ₸" },
+                    { image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=200", title: "Nike Air Max 270", price: "49 990 ₸" }
                 ]
             }
         };
 
-        // СОСТОЯНИЕ ПРИЛОЖЕНИЯ
         let currentPeriod = "week";
-        let currentCategory = "all";
 
         function renderApp() {
             const app = document.getElementById('app');
@@ -213,56 +223,31 @@
                     </div>
                 </header>
 
-                <div class="analytics-grid">
-                    <div class="stat-card">
-                        <div class="stat-title">
-                            <span class="kz">Өсіп келе жатқан тауарлар (%)</span>
-                            <span class="ru">Растущие ниши (%)</span>
-                        </div>
-                        <ul class="stat-list">
-                            ${data.growingNiches.map(niche => `
-                                <li class="stat-item">
-                                    <div class="stat-name">
-                                        <span class="kz">${niche.kz}</span>
-                                        <span class="ru">${niche.ru}</span>
-                                    </div>
-                                    <div class="stat-value">${niche.growth}</div>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
+                <div class="section-title">
+                    <span class="kz">Өсіп келе жатқан нишалар</span>
+                    <span class="ru">Растущие ниши</span>
+                </div>
 
-                    <div class="stat-card">
-                        <div class="stat-title">
-                            <span class="kz">Көп ізделгендер</span>
-                            <span class="ru">Часто ищут</span>
-                        </div>
-                        <ul class="stat-list">
-                            ${data.topSearches.map((search, index) => `
-                                <li class="search-item">
-                                    <span class="search-rank">${index + 1}.</span>
-                                    <span>${search}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
+                <div class="stat-card">
+                    <ul class="stat-list">
+                        ${data.growingNiches.map(niche => `
+                            <li class="stat-item">
+                                <div class="stat-name">
+                                    <span class="kz">${niche.kz}</span>
+                                    <span class="ru">${niche.ru}</span>
+                                </div>
+                                <div class="stat-value">${niche.growth}</div>
+                            </li>
+                        `).join('')}
+                    </ul>
                 </div>
 
                 <div class="section-title">
-                    <span class="kz">Үздік тауарлар (Топ-10)</span>
-                    <span class="ru">Топ товары (Топ-10)</span>
+                    <span class="kz">ТОП-10 Тауар</span>
+                    <span class="ru">ТОП-10 Товаров</span>
                 </div>
 
-                <div class="tabs-container">
-                    ${DATA.categories.map(cat => `
-                        <div class="tab-btn ${cat.id === currentCategory ? 'active' : ''}" onclick="setCategory('${cat.id}')">
-                            <span class="kz">${cat.kz}</span>
-                            <span class="ru">${cat.ru}</span>
-                        </div>
-                    `).join('')}
-                </div>
-
-                <main class="products-grid" id="productsGrid">
+                <main class="products-list">
                     ${generateProductsHTML(data.products)}
                 </main>
 
@@ -275,49 +260,34 @@
             app.innerHTML = html;
         }
 
-        // Переключение Неделя/Месяц
         window.setPeriod = function(period) {
             currentPeriod = period;
             renderApp();
         }
 
-        // Переключение категорий товаров
-        window.setCategory = function(categoryId) {
-            currentCategory = categoryId;
-            const data = DATA[currentPeriod];
+        function generateProductsHTML(products) {
+            if (products.length === 0) return `<div style="padding: 20px; color: var(--gray-text);">Тауарлар табылмады / Нет товаров</div>`;
             
-            // Обновляем визуал кнопок
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            return products.map((prod, index) => {
+                // Если картинки нет, добавляем класс no-image
+                const bgStyle = prod.image ? `background-image: url('${prod.image}');` : '';
+                const imageClass = prod.image ? 'product-image' : 'product-image no-image';
 
-            // Перерисовываем только сетку товаров
-            document.getElementById('productsGrid').innerHTML = generateProductsHTML(data.products);
-        }
-
-        // Генерация карточек товаров
-        function generateProductsHTML(allProducts) {
-            // Фильтруем по категории
-            const filtered = currentCategory === 'all' 
-                ? allProducts 
-                : allProducts.filter(p => p.categoryId === currentCategory);
-            
-            if (filtered.length === 0) return `<div style="padding: 20px; color: var(--gray-text);">Тауарлар табылмады / Нет товаров</div>`;
-            
-            return filtered.map((prod, index) => `
+                return `
                 <div class="product-card">
-                    <div class="product-image" style="background-image: url('${prod.image}')">
+                    <div class="${imageClass}" style="${bgStyle}">
                         <div class="product-rank">${index + 1}</div>
                     </div>
                     <div class="product-info">
                         <div class="product-title">${prod.title}</div>
                         <div class="product-price">${prod.price}</div>
-                        <a href="${prod.link}" class="buy-button">Көру / Посмотреть</a>
                     </div>
+                    <a href="#" class="buy-button">Көру</a>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        // Запуск при загрузке
         document.addEventListener('DOMContentLoaded', renderApp);
     </script>
 </body>
