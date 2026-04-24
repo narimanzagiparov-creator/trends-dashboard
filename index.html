@@ -20,17 +20,16 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-
         body { background-color: var(--bg-color); color: var(--ru-color); padding: 30px 0; }
-
         .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 0 20px; }
 
-        /* Шапка и переключатель периода */
+        /* Шапка */
         header { margin-bottom: 32px; text-align: center; }
         .logo { font-weight: 800; font-size: 36px; letter-spacing: -1px; margin-bottom: 20px; line-height: 1.1; }
         .logo div:first-child { color: var(--kz-color); }
         .logo div:last-child { color: var(--ru-color); font-size: 24px; opacity: 0.8; }
 
+        /* Переключатель Неделя/Месяц */
         .period-toggle {
             display: inline-flex;
             background: var(--card-bg);
@@ -52,21 +51,15 @@
         }
         .period-btn.active { background: var(--ru-color); color: #FFF; }
 
-        .date-display { font-size: 14px; font-weight: 600; color: var(--gray-text); }
+        .date-display { font-size: 14px; font-weight: 600; color: var(--gray-text); background: var(--card-bg); padding: 8px 16px; border-radius: 100px; display: inline-block; border: 1px solid var(--border-color);}
         .date-display .kz { color: var(--kz-color); }
 
-        /* Заголовки секций */
         .section-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; margin-top: 32px; display: flex; flex-direction: column; gap: 4px; }
         .section-title .kz { color: var(--kz-color); }
         .section-title .ru { font-size: 14px; font-weight: 600; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px;}
 
-        /* Аналитика (Один широкий блок) */
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-        }
+        /* Аналитика (Растущие ниши) */
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 20px; }
         .stat-list { list-style: none; }
         .stat-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
         .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -79,133 +72,152 @@
         .products-list { display: flex; flex-direction: column; gap: 10px; }
         
         .product-card { 
-            background: var(--card-bg); 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            padding: 10px;
-            border: 1px solid var(--border-color); 
-            gap: 14px;
+            background: var(--card-bg); border-radius: 12px; display: flex; align-items: center; padding: 10px; border: 1px solid var(--border-color); gap: 14px;
+            transition: transform 0.2s;
         }
+        .product-card:active { transform: scale(0.98); }
 
         .product-image { 
-            width: 60px; 
-            height: 60px; 
-            border-radius: 8px; 
-            background-size: cover; 
-            background-position: center; 
-            position: relative; 
-            flex-shrink: 0;
-            background-color: #EFEFEF; /* Цвет заглушки, если нет фото */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 60px; height: 60px; border-radius: 8px; background-size: cover; background-position: center; position: relative; flex-shrink: 0; background-color: #EFEFEF; display: flex; align-items: center; justify-content: center;
         }
-        
-        /* Текст внутри заглушки (если нет картинки) */
-        .product-image::after {
-            content: "TEEZ";
-            font-size: 10px;
-            font-weight: 800;
-            color: #CCC;
-            opacity: 0; /* Скрыто по умолчанию */
-        }
-        .product-image.no-image::after { opacity: 1; }
+        .product-image.no-image::after { content: "TEEZ"; font-size: 10px; font-weight: 800; color: #CCC; }
 
         .product-rank { 
-            position: absolute; 
-            top: -6px; 
-            left: -6px; 
-            background: var(--ru-color); 
-            color: #FFF; 
-            font-weight: 800; 
-            width: 22px; 
-            height: 22px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border-radius: 6px; 
-            font-size: 11px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            position: absolute; top: -6px; left: -6px; background: var(--ru-color); color: #FFF; font-weight: 800; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 11px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .product-info { 
-            display: flex; 
-            flex-direction: column; 
-            flex-grow: 1;
-            justify-content: center;
-            min-width: 0; /* Фикс для обрезки текста */
-        }
-
-        .product-title { 
-            font-size: 14px; 
-            font-weight: 600; 
-            color: var(--ru-color); 
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
+        .product-info { display: flex; flex-direction: column; flex-grow: 1; justify-content: center; min-width: 0; }
+        .product-title { font-size: 14px; font-weight: 600; color: var(--ru-color); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .product-price { font-size: 15px; font-weight: 800; color: var(--kz-color); }
 
         .buy-button { 
-            background: var(--accent-green); 
-            color: #000; 
-            padding: 8px 14px; 
-            border-radius: 8px; 
-            text-decoration: none; 
-            font-weight: 700; 
-            font-size: 12px;
-            flex-shrink: 0;
+            background: var(--accent-green); color: #000; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 12px; flex-shrink: 0;
         }
+
+        /* Загрузка */
+        .loading { text-align: center; padding: 40px; color: var(--gray-text); font-weight: 600; font-size: 16px; }
 
         footer { margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
 
-    <div class="container" id="app"></div>
+    <div class="container" id="app">
+        <div class="loading">Загрузка данных... / Мәліметтер жүктелуде...</div>
+    </div>
 
     <script>
-        const DATA = {
-            // 📅 НЕДЕЛЯ
+        // ---------------------------------------------------------
+        // 🔧 НАСТРОЙКИ: ССЫЛКИ НА GOOGLE ТАБЛИЦЫ (CSV)
+        // ---------------------------------------------------------
+        const URL_WEEK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBfJEdlHEmRSv3k8zBjfiZCyn3u0VZl17MicgV8ZSkmlLEb8BfS3-C2JokEfwX7FlDE5Yy2HDgmSUe/pub?gid=0&single=true&output=csv";
+        const URL_MONTH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBfJEdlHEmRSv3k8zBjfiZCyn3u0VZl17MicgV8ZSkmlLEb8BfS3-C2JokEfwX7FlDE5Yy2HDgmSUe/pub?gid=1833364113&single=true&output=csv";
+
+        // Статичные данные для аналитики (меняются вручную прямо тут при необходимости)
+        const ANALYTICS = {
             week: {
-                dateStr: { kz: "15 — 21 сәуір", ru: "15 — 21 апреля" },
-                growingNiches: [
-                    { kz: "Күннен қорғайтын көзілдірік", ru: "Солнцезащитные очки", growth: "+145%" },
-                    { kz: "Сымсыз құлаққаптар", ru: "Беспроводные наушники", growth: "+80%" }
-                ],
-                products: [
-                    { image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=200", title: "Nike Air Max 270", price: "49 990 ₸" },
-                    { image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=200", title: "Худи Essentials", price: "28 000 ₸" },
-                    { image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=200", title: "Sony WH-1000XM4", price: "185 000 ₸" },
-                    { image: "", title: "Товар без фотографии", price: "12 000 ₸" }, // <-- Пример товара без картинки
-                    { image: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=200", title: "Летнее женское платье", price: "15 500 ₸" }
+                dateKz: "Соңғы 7 күн", dateRu: "Последние 7 дней",
+                niches: [
+                    { kz: "Үйге арналған", ru: "Товары для дома", growth: "+145%" },
+                    { kz: "Киім және аяқ киім", ru: "Одежда и обувь", growth: "+80%" }
                 ]
             },
-
-            // 📅 МЕСЯЦ
             month: {
-                dateStr: { kz: "Сәуір 2024", ru: "Апрель 2024" },
-                growingNiches: [
+                dateKz: "Соңғы 30 күн", dateRu: "Последние 30 дней",
+                niches: [
                     { kz: "Жазғы аяқ киім", ru: "Летняя обувь", growth: "+210%" },
-                    { kz: "Ақылды сағаттар", ru: "Умные часы", growth: "+95%" }
-                ],
-                products: [
-                    { image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=200", title: "Sony WH-1000XM4", price: "185 000 ₸" },
-                    { image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=200", title: "Apple Watch Series 9", price: "240 000 ₸" },
-                    { image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=200", title: "Nike Air Max 270", price: "49 990 ₸" }
+                    { kz: "Электроника", ru: "Электроника", growth: "+95%" }
                 ]
             }
         };
 
-        let currentPeriod = "week";
+        let currentPeriod = "week"; // По умолчанию открывается неделя
+        let cachedData = { week: null, month: null }; // Кэш, чтобы не качать таблицу дважды
 
-        function renderApp() {
+        // Парсер CSV
+        function parseCSV(str) {
+            const arr = [];
+            let quote = false;
+            let row = 0, col = 0;
+            for (let c = 0; c < str.length; c++) {
+                let cc = str[c], nc = str[c+1];
+                arr[row] = arr[row] || [];
+                arr[row][col] = arr[row][col] || '';
+                if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
+                if (cc == '"') { quote = !quote; continue; }
+                if (cc == ',' && !quote) { ++col; continue; }
+                if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
+                if (cc == '\n' && !quote) { ++row; col = 0; continue; }
+                if (cc == '\r' && !quote) { ++row; col = 0; continue; }
+                arr[row][col] += cc;
+            }
+            return arr;
+        }
+
+        async function loadData(period) {
+            currentPeriod = period;
             const app = document.getElementById('app');
-            const data = DATA[currentPeriod];
 
+            // Если данные уже скачаны, просто перерисовываем
+            if (cachedData[period]) {
+                renderHTML();
+                return;
+            }
+
+            app.innerHTML = `<div class="loading">Загрузка данных... / Мәліметтер жүктелуде...</div>`;
+
+            try {
+                const targetUrl = period === 'week' ? URL_WEEK : URL_MONTH;
+                
+                // Проверка: если ссылка не вставлена
+                if(targetUrl.includes("ВСТАВЬ_ССЫЛКУ")) {
+                    app.innerHTML = `<div class="loading" style="color: red;">Ошибка: Вставьте ссылку на CSV в код!</div>`;
+                    return;
+                }
+
+                const response = await fetch(targetUrl);
+                const csvText = await response.text();
+                
+                const parsedData = parseCSV(csvText);
+                
+                // Индексы на безопасном листе: 0-Название, 1-Цена, 2-URL картинки
+                const products = parsedData.slice(1).map(row => {
+                    if (!row || row.length < 2 || !row[0]) return null;
+                    
+                    // Форматирование цены (убираем пробелы, если есть, превращаем в число и обратно красиво)
+                    const rawPrice = parseInt(row[1].replace(/\D/g, '')) || 0;
+                    const formattedPrice = rawPrice.toLocaleString('ru-RU') + ' ₸';
+
+                    return {
+                        title: row[0].trim(),
+                        price: formattedPrice,
+                        image: row[2] ? row[2].trim() : "",
+                        link: "https://teez.kz"
+                    };
+                }).filter(Boolean).slice(0, 10); // Строго топ-10
+
+                cachedData[period] = products; // Сохраняем в кэш
+                renderHTML();
+
+            } catch (error) {
+                console.error("Ошибка загрузки:", error);
+                app.innerHTML = `
+                    <header>
+                        <div class="period-toggle">
+                            <button class="period-btn ${currentPeriod === 'week' ? 'active' : ''}" onclick="loadData('week')">Неделя</button>
+                            <button class="period-btn ${currentPeriod === 'month' ? 'active' : ''}" onclick="loadData('month')">Месяц</button>
+                        </div>
+                    </header>
+                    <div class="loading" style="color: red;">Ошибка загрузки данных. Проверьте ссылку на таблицу.</div>
+                `;
+            }
+        }
+
+        function renderHTML() {
+            const app = document.getElementById('app');
+            const data = cachedData[currentPeriod];
+            const analytics = ANALYTICS[currentPeriod];
+            
             let html = `
                 <header>
                     <div class="logo">
@@ -214,12 +226,12 @@
                     </div>
                     
                     <div class="period-toggle">
-                        <button class="period-btn ${currentPeriod === 'week' ? 'active' : ''}" onclick="setPeriod('week')">Неделя</button>
-                        <button class="period-btn ${currentPeriod === 'month' ? 'active' : ''}" onclick="setPeriod('month')">Месяц</button>
+                        <button class="period-btn ${currentPeriod === 'week' ? 'active' : ''}" onclick="loadData('week')">Неделя</button>
+                        <button class="period-btn ${currentPeriod === 'month' ? 'active' : ''}" onclick="loadData('month')">Месяц</button>
                     </div>
 
                     <div class="date-display">
-                        <span class="kz">${data.dateStr.kz}</span> | <span>${data.dateStr.ru}</span>
+                        <span class="kz">${analytics.dateKz}</span> | <span>${analytics.dateRu}</span>
                     </div>
                 </header>
 
@@ -230,7 +242,7 @@
 
                 <div class="stat-card">
                     <ul class="stat-list">
-                        ${data.growingNiches.map(niche => `
+                        ${analytics.niches.map(niche => `
                             <li class="stat-item">
                                 <div class="stat-name">
                                     <span class="kz">${niche.kz}</span>
@@ -248,11 +260,11 @@
                 </div>
 
                 <main class="products-list">
-                    ${generateProductsHTML(data.products)}
+                    ${generateProductsHTML(data)}
                 </main>
 
                 <footer>
-                    <div style="color: var(--kz-color); font-size: 13px; font-weight: 600;">© 2024 Teez Business. Барлық құқықтар қорғалған.</div>
+                    <div style="color: var(--kz-color); font-size: 13px; font-weight: 600;">© 2026 Teez Business. Барлық құқықтар қорғалған.</div>
                     <div style="color: var(--gray-text); font-size: 12px; margin-top: 4px;">Все права защищены.</div>
                 </footer>
             `;
@@ -260,16 +272,10 @@
             app.innerHTML = html;
         }
 
-        window.setPeriod = function(period) {
-            currentPeriod = period;
-            renderApp();
-        }
-
         function generateProductsHTML(products) {
-            if (products.length === 0) return `<div style="padding: 20px; color: var(--gray-text);">Тауарлар табылмады / Нет товаров</div>`;
+            if (!products || products.length === 0) return `<div style="padding: 20px; color: var(--gray-text);">Нет данных в таблице</div>`;
             
             return products.map((prod, index) => {
-                // Если картинки нет, добавляем класс no-image
                 const bgStyle = prod.image ? `background-image: url('${prod.image}');` : '';
                 const imageClass = prod.image ? 'product-image' : 'product-image no-image';
 
@@ -279,16 +285,17 @@
                         <div class="product-rank">${index + 1}</div>
                     </div>
                     <div class="product-info">
-                        <div class="product-title">${prod.title}</div>
+                        <div class="product-title" title="${prod.title}">${prod.title}</div>
                         <div class="product-price">${prod.price}</div>
                     </div>
-                    <a href="#" class="buy-button">Көру</a>
+                    <a href="${prod.link}" target="_blank" class="buy-button">Көру</a>
                 </div>
                 `;
             }).join('');
         }
 
-        document.addEventListener('DOMContentLoaded', renderApp);
+        // Запуск при открытии страницы (грузим неделю)
+        document.addEventListener('DOMContentLoaded', () => loadData('week'));
     </script>
 </body>
 </html>
