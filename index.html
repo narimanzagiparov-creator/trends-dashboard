@@ -42,7 +42,6 @@
             margin-bottom: 30px;
         }
 
-        /* Переключатель языков */
         .lang-switcher {
             position: absolute;
             top: 20px;
@@ -81,10 +80,7 @@
         }
 
         .logo span { 
-            background-color: var(--kz-color); 
-            padding: 2px 8px;
-            border-radius: 6px;
-            color: #000;
+            color: var(--kz-color); 
         }
 
         .period-selector {
@@ -128,7 +124,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         @media (max-width: 768px) {
@@ -141,6 +137,11 @@
             font-size: 20px;
             color: var(--text-main);
             margin-bottom: 20px;
+            margin-top: 40px; 
+        }
+
+        .top-section .section-title {
+            margin-top: 0;
         }
 
         .card-box {
@@ -149,12 +150,24 @@
             padding: 24px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.04);
             height: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
-        .tips-list { list-style: none; padding: 0; margin: 0; }
+        .tips-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
         .tips-list li { position: relative; padding-left: 35px; margin-bottom: 16px; font-size: 14px; line-height: 1.5; color: var(--text-muted); }
         .tips-list li strong { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 15px; }
         .tips-list li::before { content: "💡"; position: absolute; left: 0; top: 2px; font-size: 20px; }
+
+        .data-source {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 11px;
+            color: #999;
+            font-style: italic;
+            line-height: 1.4;
+        }
 
         .products-list {
             display: grid;
@@ -188,7 +201,6 @@
             background-position: center;
             position: relative;
             flex-shrink: 0;
-            border: 1px solid #eaeaea;
         }
 
         .product-rank {
@@ -221,6 +233,7 @@
             font-weight: 700;
             font-size: 13px;
             transition: 0.2s;
+            white-space: nowrap;
         }
 
         .buy-button:hover { background: var(--kz-color); color: #000; }
@@ -243,7 +256,7 @@
             <button class="lang-btn active" id="lang-ru" onclick="switchLang('ru')">RU</button>
             <button class="lang-btn" id="lang-kz" onclick="switchLang('kz')">KZ</button>
         </div>
-        <div class="logo">TEEZ <span>TRENDS</span></div>
+        <div class="logo"><span>TEEZ</span> TRENDS</div>
         <div class="period-selector">
             <button class="period-btn active" id="btn-week"></button>
             <button class="period-btn" id="btn-month"></button>
@@ -252,6 +265,7 @@
     </div>
 
     <div class="main-container">
+        
         <div class="top-section">
             <div class="niche-column">
                 <div class="section-title" id="title-niches"></div>
@@ -262,6 +276,7 @@
                 <div class="section-title" id="title-tips"></div>
                 <div class="card-box">
                     <ul class="tips-list" id="tips-container"></ul>
+                    <div class="data-source" id="source-text"></div>
                 </div>
             </div>
         </div>
@@ -276,9 +291,8 @@
 
         let currentUrl = URL_WEEK;
         let currentLang = 'ru';
-        let latestDbDate = ''; // Сохраняем дату из базы
+        let latestDbDate = ''; 
 
-        // СЛОВАРЬ ПЕРЕВОДОВ
         const i18n = {
             ru: {
                 btnWeek: "Неделя",
@@ -290,7 +304,8 @@
                 btnLook: "Смотреть",
                 noPhoto: "Нет фото",
                 loadingDate: "Загрузка...",
-                errorLoad: "Ошибка загрузки данных",
+                errorLoad: "Ошибка загрузки",
+                source: "Источник данных: Внутренняя аналитика продаж Teez и данные поисковых запросов Google Trends по Казахстану.",
                 tips: [
                     "<strong>Сезон пикников</strong>Шампуры, решетки для гриля, складная мебель и средства от комаров сейчас в топе запросов на маркетплейсах РК.",
                     "<strong>Подготовка к лету</strong>Резкий рост спроса на футболки базовых цветов, бейсболки, солнцезащитные очки и SPF-кремы.",
@@ -308,7 +323,8 @@
                 btnLook: "Көру",
                 noPhoto: "Сурет жоқ",
                 loadingDate: "Жүктелуде...",
-                errorLoad: "Деректерді жүктеу қатесі",
+                errorLoad: "Жүктеу қатесі",
+                source: "Дереккөз: Teez ішкі сату талдауы және Қазақстан бойынша Google Trends іздеу сұрауларының деректері.",
                 tips: [
                     "<strong>Пикниктер мен Дача</strong>Кәуап пісіргіштер, гриль торлары, жиналмалы жиһаз және масаларға қарсы құралдар қазір ҚР маркетплейстерінде сұранысқа ие.",
                     "<strong>Жазға дайындық</strong>Базалық түстегі футболкаларға, бейсболкаларға, күннен қорғайтын көзілдіріктерге және SPF-кремдерге сұраныс күрт өсті.",
@@ -318,34 +334,26 @@
             }
         };
 
-        // ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА
         function switchLang(lang) {
             currentLang = lang;
-            
-            // Переключаем активную кнопку
             document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
             document.getElementById('lang-kz').classList.toggle('active', lang === 'kz');
-
-            // Обновляем статические тексты
             document.getElementById('btn-week').innerText = i18n[lang].btnWeek;
             document.getElementById('btn-month').innerText = i18n[lang].btnMonth;
             document.getElementById('title-niches').innerText = i18n[lang].titleNiches;
             document.getElementById('title-tips').innerText = i18n[lang].titleTips;
             document.getElementById('title-products').innerText = i18n[lang].titleProducts;
+            document.getElementById('source-text').innerText = i18n[lang].source;
 
-            // Обновляем дату (если она уже загружена)
             if(latestDbDate) {
                 document.getElementById('date-display').innerText = `${i18n[lang].period}: ${latestDbDate}`;
             }
 
-            // Обновляем лайфхаки
             const tipsHtml = i18n[lang].tips.map(tip => `<li>${tip}</li>`).join('');
             document.getElementById('tips-container').innerHTML = tipsHtml;
 
-            // Если товары уже загружены, перерисовываем их, чтобы обновился язык кнопок "Смотреть/Көру"
-            if (window.currentProducts) {
-                renderProducts(window.currentProducts);
-            }
+            if (window.currentNiches) renderNiches(window.currentNiches);
+            if (window.currentProducts) renderProducts(window.currentProducts);
         }
 
         async function fetchData() {
@@ -358,20 +366,23 @@
                 const data = await response.text();
                 const rows = data.split('\n').map(row => row.split('\t').map(c => c.replace(/\r/g, '').replace(/"/g, '').trim()));
 
-                // Получаем дату из таблицы
-                latestDbDate = rows[0][3] || "";
+                latestDbDate = rows[0][4] || "";
                 document.getElementById('date-display').innerText = `${i18n[currentLang].period}: ${latestDbDate}`;
 
-                const nichesData = rows.slice(0, 5).map(row => ({ name: row[0], growth: row[1] || "" })).filter(n => n.name && n.name !== "Ниша" && n.name !== "Растущая ниша");
+                window.currentNiches = rows.slice(0, 5).map(row => ({ 
+                    nameRu: row[0], 
+                    nameKz: row[1] || row[0], 
+                    growth: row[2] || "" 
+                })).filter(n => n.nameRu && n.nameRu !== "Ниша" && n.nameRu !== "Растущая ниша");
                 
-                // Сохраняем товары глобально, чтобы менять язык кнопок без перезагрузки из базы
                 window.currentProducts = rows.slice(6).map(row => ({
-                    title: row[0],
-                    price: row[1] ? parseInt(row[1].replace(/\s/g, '')).toLocaleString('ru-RU') + ' ₸' : '',
-                    img: row[2] || '' 
-                })).filter(p => p.title).slice(0, 10);
+                    titleRu: row[0],
+                    titleKz: row[1] || row[0], 
+                    price: row[2] ? parseInt(row[2].replace(/\s/g, '')).toLocaleString('ru-RU') + ' ₸' : '',
+                    img: row[3] || '' 
+                })).filter(p => p.titleRu).slice(0, 10);
 
-                renderNiches(nichesData);
+                renderNiches(window.currentNiches);
                 renderProducts(window.currentProducts);
             } catch (e) {
                 console.error("Ошибка:", e);
@@ -384,7 +395,7 @@
             const container = document.getElementById('niches-container');
             container.innerHTML = niches.map(n => `
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f0f0f0">
-                    <div style="font-weight:600; font-size:15px; color:var(--text-main);">${n.name}</div>
+                    <div style="font-weight:600; font-size:15px; color:var(--text-main);">${currentLang === 'kz' ? n.nameKz : n.nameRu}</div>
                     <div style="background:${n.growth.startsWith('+') ? 'rgba(180,255,135,0.4)' : '#ffeaea'}; 
                                 padding:6px 12px; border-radius:8px; font-weight:800; font-size:14px;
                                 color:${n.growth.startsWith('+') ? '#1e5c20' : '#d32f2f'}">
@@ -403,7 +414,7 @@
                         <div class="product-rank">${i+1}</div>
                     </div>
                     <div class="product-info">
-                        <div class="product-title" title="${p.title}">${p.title}</div>
+                        <div class="product-title" title="${currentLang === 'kz' ? p.titleKz : p.titleRu}">${currentLang === 'kz' ? p.titleKz : p.titleRu}</div>
                         <div class="product-price">${p.price}</div>
                     </div>
                     ${p.img ? `<a href="${p.img}" target="_blank" class="buy-button">${i18n[currentLang].btnLook}</a>` : `<div class="buy-button" style="opacity:0.5; pointer-events:none">${i18n[currentLang].noPhoto}</div>`}
@@ -427,9 +438,8 @@
             fetchData();
         });
 
-        // Запуск при загрузке страницы
         document.addEventListener('DOMContentLoaded', () => {
-            switchLang('ru'); // При загрузке ставим русский по умолчанию
+            switchLang('ru'); 
             fetchData();
         });
     </script>
