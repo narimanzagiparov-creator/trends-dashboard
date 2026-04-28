@@ -6,13 +6,14 @@
     <title>Аналитика Трендов Teez</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --kz-color: #b4ff87; /* Фирменный зеленый Teez */
-            --bg-color: #0c0c0c;
+            --kz-color: #b4ff87;
+            --bg-color: #f5f7fa;
             --card-bg: #ffffff;
             --text-main: #1a1a1a;
+            --text-muted: #666666;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -21,40 +22,77 @@
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
-            font-family: 'Urbanist', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             color: var(--text-main);
         }
 
         .main-container {
             width: 100%;
-            max-width: 1200px; /* Широкий экран */
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px 40px;
         }
 
-        /* Header */
         .header {
-            background-color: var(--bg-color);
-            padding: 40px 20px;
+            position: relative;
+            padding: 40px 20px 20px;
             text-align: center;
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+        }
+
+        /* Переключатель языков */
+        .lang-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            background: #f0f2f5;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 6px 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--card-bg);
+            color: var(--text-main);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .logo {
             font-weight: 800;
-            font-size: 36px;
-            color: #fff;
+            font-size: 32px;
+            color: var(--text-main);
             letter-spacing: -1px;
+            text-transform: uppercase;
         }
 
-        .logo span { color: var(--kz-color); }
+        .logo span { 
+            background-color: var(--kz-color); 
+            padding: 2px 8px;
+            border-radius: 6px;
+            color: #000;
+        }
 
-        /* Period Switcher */
         .period-selector {
             display: flex;
-            background: rgba(255,255,255,0.1);
+            background: #f0f2f5;
             padding: 6px;
-            border-radius: 14px;
-            margin: 30px auto 0;
+            border-radius: 12px;
+            margin: 25px auto 15px;
             max-width: 400px;
         }
 
@@ -63,39 +101,61 @@
             padding: 12px;
             border: none;
             background: none;
-            color: #fff;
-            font-family: 'Urbanist', sans-serif;
+            color: var(--text-muted);
+            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: 8px;
             transition: 0.3s;
         }
 
         .period-btn.active {
-            background: var(--kz-color);
-            color: #000;
+            background: var(--card-bg);
+            color: var(--text-main);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* Sections */
-        .section-title {
-            padding: 40px 0 20px;
-            font-weight: 800;
-            font-size: 24px;
-            color: #fff;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .dynamic-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        .niche-box {
-            background: #1a1a1a;
-            border-radius: 20px;
-            padding: 20px 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            max-width: 800px;
+        .top-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
-        /* Products Grid */
+        @media (max-width: 768px) {
+            .top-section { grid-template-columns: 1fr; }
+            .lang-switcher { top: 10px; right: 10px; }
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 20px;
+            color: var(--text-main);
+            margin-bottom: 20px;
+        }
+
+        .card-box {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            height: 100%;
+        }
+
+        .tips-list { list-style: none; padding: 0; margin: 0; }
+        .tips-list li { position: relative; padding-left: 35px; margin-bottom: 16px; font-size: 14px; line-height: 1.5; color: var(--text-muted); }
+        .tips-list li strong { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 15px; }
+        .tips-list li::before { content: "💡"; position: absolute; left: 0; top: 2px; font-size: 20px; }
+
         .products-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -103,139 +163,219 @@
         }
 
         .product-card {
-            background: #1a1a1a;
+            background: var(--card-bg);
             border-radius: 16px;
             padding: 16px;
             display: flex;
             align-items: center;
             gap: 20px;
-            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #f0f0f0;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
-            background: #222;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
 
         .product-image {
-            width: 90px;
-            height: 90px;
-            border-radius: 12px;
-            background-color: #2a2a2a; /* Цвет заглушки, если нет фото */
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            background-color: #f5f5f5;
             background-size: cover;
             background-position: center;
             position: relative;
             flex-shrink: 0;
+            border: 1px solid #eaeaea;
         }
 
         .product-rank {
             position: absolute;
-            top: -8px;
-            left: -8px;
+            top: -10px;
+            left: -10px;
             background: var(--kz-color);
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 3px solid #1a1a1a;
+            border: 3px solid var(--card-bg);
             color: #000;
         }
 
-        .product-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .product-title { font-size: 15px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; color: #fff; }
-        .product-price { font-weight: 800; font-size: 18px; color: var(--kz-color); }
+        .product-info { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .product-title { font-size: 14px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; color: var(--text-main); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-price { font-weight: 800; font-size: 18px; color: #000; }
 
         .buy-button {
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
+            padding: 8px 16px;
+            background: #f0f2f5;
+            border-radius: 8px;
             text-decoration: none;
-            color: #fff;
+            color: var(--text-main);
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             transition: 0.2s;
         }
 
-        .buy-button:hover {
-            background: var(--kz-color);
-            color: #000;
-        }
+        .buy-button:hover { background: var(--kz-color); color: #000; }
 
-        /* Skeletons */
         .skeleton {
-            background: #2a2a2a;
-            background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
+            background: #eee;
+            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
             border-radius: 5px;
             background-size: 200% 100%;
             animation: 1.5s shine linear infinite;
         }
-
         @keyframes shine { to { background-position-x: -200%; } }
-
         .loading-shimmer { height: 20px; margin-bottom: 10px; width: 100%; }
     </style>
 </head>
 <body>
 
     <div class="header">
+        <div class="lang-switcher">
+            <button class="lang-btn active" id="lang-ru" onclick="switchLang('ru')">RU</button>
+            <button class="lang-btn" id="lang-kz" onclick="switchLang('kz')">KZ</button>
+        </div>
         <div class="logo">TEEZ <span>TRENDS</span></div>
         <div class="period-selector">
-            <button class="period-btn active" id="btn-week">Апта / Неделя</button>
-            <button class="period-btn" id="btn-month">Ай / Месяц</button>
+            <button class="period-btn active" id="btn-week"></button>
+            <button class="period-btn" id="btn-month"></button>
         </div>
+        <div class="dynamic-date" id="date-display"></div>
     </div>
 
     <div class="main-container">
-        <div class="section-title">Өсіп келе жатқан тауашалар / Растущие ниши</div>
-        <div class="niche-box" id="niches-container">
+        <div class="top-section">
+            <div class="niche-column">
+                <div class="section-title" id="title-niches"></div>
+                <div class="card-box" id="niches-container"></div>
             </div>
 
-        <div class="section-title">ТОП-10 тауар / ТОП-10 товаров</div>
-        <div class="products-list" id="products-container">
+            <div class="tips-column">
+                <div class="section-title" id="title-tips"></div>
+                <div class="card-box">
+                    <ul class="tips-list" id="tips-container"></ul>
+                </div>
             </div>
+        </div>
+
+        <div class="section-title" id="title-products"></div>
+        <div class="products-list" id="products-container"></div>
     </div>
 
     <script>
-        // ОБРАТИ ВНИМАНИЕ: Ссылки теперь заканчиваются на output=tsv
         const URL_WEEK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=tsv&gid=2067344733";
         const URL_MONTH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=tsv&gid=929155732";
 
         let currentUrl = URL_WEEK;
+        let currentLang = 'ru';
+        let latestDbDate = ''; // Сохраняем дату из базы
+
+        // СЛОВАРЬ ПЕРЕВОДОВ
+        const i18n = {
+            ru: {
+                btnWeek: "Неделя",
+                btnMonth: "Месяц",
+                period: "Период",
+                titleNiches: "Растущие ниши",
+                titleTips: "Сезонные тренды",
+                titleProducts: "ТОП-10 товаров",
+                btnLook: "Смотреть",
+                noPhoto: "Нет фото",
+                loadingDate: "Загрузка...",
+                errorLoad: "Ошибка загрузки данных",
+                tips: [
+                    "<strong>Сезон пикников</strong>Шампуры, решетки для гриля, складная мебель и средства от комаров сейчас в топе запросов на маркетплейсах РК.",
+                    "<strong>Подготовка к лету</strong>Резкий рост спроса на футболки базовых цветов, бейсболки, солнцезащитные очки и SPF-кремы.",
+                    "<strong>Автосезон</strong>Водители обновляют расходники: губки для мытья, летние омыватели стекол, солнцезащитные шторки и ароматизаторы.",
+                    "<strong>Весенняя уборка</strong>Растет спрос на органайзеры для хранения зимних вещей, вакуумные пакеты и салфетки для мытья окон."
+                ]
+            },
+            kz: {
+                btnWeek: "Апта",
+                btnMonth: "Ай",
+                period: "Кезең",
+                titleNiches: "Өсіп келе жатқан тауашалар",
+                titleTips: "Маусымдық трендтер",
+                titleProducts: "ТОП-10 тауар",
+                btnLook: "Көру",
+                noPhoto: "Сурет жоқ",
+                loadingDate: "Жүктелуде...",
+                errorLoad: "Деректерді жүктеу қатесі",
+                tips: [
+                    "<strong>Пикниктер мен Дача</strong>Кәуап пісіргіштер, гриль торлары, жиналмалы жиһаз және масаларға қарсы құралдар қазір ҚР маркетплейстерінде сұранысқа ие.",
+                    "<strong>Жазға дайындық</strong>Базалық түстегі футболкаларға, бейсболкаларға, күннен қорғайтын көзілдіріктерге және SPF-кремдерге сұраныс күрт өсті.",
+                    "<strong>Автомобиль маусымы</strong>Жүргізушілер жазғы жуғыш сұйықтықтарды, терезе перделерін және хош иістендіргіштерді жаңартуда.",
+                    "<strong>Көктемгі тазалық</strong>Қысқы киімдерді сақтауға арналған органайзерлерге, вакуумдық қаптарға және терезе жууға арналған майлықтарға сұраныс артуда."
+                ]
+            }
+        };
+
+        // ФУНКЦИЯ ПЕРЕКЛЮЧЕНИЯ ЯЗЫКА
+        function switchLang(lang) {
+            currentLang = lang;
+            
+            // Переключаем активную кнопку
+            document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
+            document.getElementById('lang-kz').classList.toggle('active', lang === 'kz');
+
+            // Обновляем статические тексты
+            document.getElementById('btn-week').innerText = i18n[lang].btnWeek;
+            document.getElementById('btn-month').innerText = i18n[lang].btnMonth;
+            document.getElementById('title-niches').innerText = i18n[lang].titleNiches;
+            document.getElementById('title-tips').innerText = i18n[lang].titleTips;
+            document.getElementById('title-products').innerText = i18n[lang].titleProducts;
+
+            // Обновляем дату (если она уже загружена)
+            if(latestDbDate) {
+                document.getElementById('date-display').innerText = `${i18n[lang].period}: ${latestDbDate}`;
+            }
+
+            // Обновляем лайфхаки
+            const tipsHtml = i18n[lang].tips.map(tip => `<li>${tip}</li>`).join('');
+            document.getElementById('tips-container').innerHTML = tipsHtml;
+
+            // Если товары уже загружены, перерисовываем их, чтобы обновился язык кнопок "Смотреть/Көру"
+            if (window.currentProducts) {
+                renderProducts(window.currentProducts);
+            }
+        }
 
         async function fetchData() {
-            // Анимация загрузки
             document.getElementById('niches-container').innerHTML = '<div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width:80%"></div>';
-            document.getElementById('products-container').innerHTML = Array(10).fill('<div class="product-card"><div class="skeleton" style="width:90px; height:90px; border-radius:12px"></div><div style="flex:1"><div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width:50%"></div></div></div>').join('');
+            document.getElementById('products-container').innerHTML = Array(10).fill('<div class="product-card"><div class="skeleton" style="width:80px; height:80px; border-radius:10px"></div><div style="flex:1"><div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width:50%"></div></div></div>').join('');
+            document.getElementById('date-display').innerText = `${i18n[currentLang].period}: ${i18n[currentLang].loadingDate}`;
 
             try {
                 const response = await fetch(currentUrl, { cache: "no-store" });
                 const data = await response.text();
-                
-                // РАЗДЕЛИТЕЛЬ ИЗМЕНЕН НА \t (табуляция), чтобы не конфликтовать с запятыми в названиях
                 const rows = data.split('\n').map(row => row.split('\t').map(c => c.replace(/\r/g, '').replace(/"/g, '').trim()));
 
-                // Ниши (строки 0-4)
-                const nichesData = rows.slice(0, 5).map(row => ({
-                    name: row[0],
-                    growth: row[1] || ""
-                })).filter(n => n.name && n.name !== "Ниша" && n.name !== "Растущая ниша");
+                // Получаем дату из таблицы
+                latestDbDate = rows[0][3] || "";
+                document.getElementById('date-display').innerText = `${i18n[currentLang].period}: ${latestDbDate}`;
 
-                // Товары (строки 6+)
-                const productsData = rows.slice(6).map(row => ({
+                const nichesData = rows.slice(0, 5).map(row => ({ name: row[0], growth: row[1] || "" })).filter(n => n.name && n.name !== "Ниша" && n.name !== "Растущая ниша");
+                
+                // Сохраняем товары глобально, чтобы менять язык кнопок без перезагрузки из базы
+                window.currentProducts = rows.slice(6).map(row => ({
                     title: row[0],
                     price: row[1] ? parseInt(row[1].replace(/\s/g, '')).toLocaleString('ru-RU') + ' ₸' : '',
-                    img: row[2] || '' // Если фото нет, будет пустая строка
+                    img: row[2] || '' 
                 })).filter(p => p.title).slice(0, 10);
 
                 renderNiches(nichesData);
-                renderProducts(productsData);
+                renderProducts(window.currentProducts);
             } catch (e) {
                 console.error("Ошибка:", e);
-                document.getElementById('niches-container').innerHTML = '<div style="color:red">Деректерді жүктеу қатесі / Ошибка загрузки данных</div>';
+                document.getElementById('niches-container').innerHTML = `<div style="color:red">${i18n[currentLang].errorLoad}</div>`;
                 document.getElementById('products-container').innerHTML = '';
             }
         }
@@ -243,20 +383,16 @@
         function renderNiches(niches) {
             const container = document.getElementById('niches-container');
             container.innerHTML = niches.map(n => `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05)">
-                    <div style="font-weight:600; font-size:16px; color:#fff;">${n.name}</div>
-                    <div style="background:${n.growth.startsWith('+') ? 'rgba(180,255,135,0.15)' : 'rgba(255,135,135,0.15)'}; 
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f0f0f0">
+                    <div style="font-weight:600; font-size:15px; color:var(--text-main);">${n.name}</div>
+                    <div style="background:${n.growth.startsWith('+') ? 'rgba(180,255,135,0.4)' : '#ffeaea'}; 
                                 padding:6px 12px; border-radius:8px; font-weight:800; font-size:14px;
-                                color:${n.growth.startsWith('+') ? 'var(--kz-color)' : '#ff6b6b'}">
+                                color:${n.growth.startsWith('+') ? '#1e5c20' : '#d32f2f'}">
                         ${n.growth}
                     </div>
                 </div>
             `).join('');
-            
-            // Убираем последнюю полоску у последнего элемента
-            if(container.lastElementChild) {
-                container.lastElementChild.style.borderBottom = 'none';
-            }
+            if(container.lastElementChild) container.lastElementChild.style.borderBottom = 'none';
         }
 
         function renderProducts(products) {
@@ -267,10 +403,10 @@
                         <div class="product-rank">${i+1}</div>
                     </div>
                     <div class="product-info">
-                        <div class="product-title">${p.title}</div>
+                        <div class="product-title" title="${p.title}">${p.title}</div>
                         <div class="product-price">${p.price}</div>
                     </div>
-                    ${p.img ? `<a href="${p.img}" target="_blank" class="buy-button">Көру</a>` : `<div class="buy-button" style="opacity:0.5; pointer-events:none">Фото жоқ</div>`}
+                    ${p.img ? `<a href="${p.img}" target="_blank" class="buy-button">${i18n[currentLang].btnLook}</a>` : `<div class="buy-button" style="opacity:0.5; pointer-events:none">${i18n[currentLang].noPhoto}</div>`}
                 </div>
             `).join('');
         }
@@ -291,7 +427,11 @@
             fetchData();
         });
 
-        document.addEventListener('DOMContentLoaded', fetchData);
+        // Запуск при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLang('ru'); // При загрузке ставим русский по умолчанию
+            fetchData();
+        });
     </script>
 </body>
 </html>
