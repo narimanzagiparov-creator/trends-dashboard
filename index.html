@@ -1,301 +1,92 @@
-<!DOCTYPE html>
-<html lang="kk-KZ">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренды Teez / Трендтері</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #FFFFFF;
-            --card-bg: #F8F9FA;
-            --kz-color: #118B11;
-            --ru-color: #111111;
-            --accent-green: #B4FF87;
-            --gray-text: #666666;
-            --border-color: #EAEAEA;
-            --border-radius: 16px;
-        }
+<script>
+        // Твои правильные CSV-ссылки (я их уже поправил)
+        const URL_WEEK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=csv&gid=2067344733";
+        const URL_MONTH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=csv&gid=929155732";
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--ru-color); padding: 30px 0; }
-        .container { width: 100%; max-width: 600px; margin: 0 auto; padding: 0 20px; }
+        let currentUrl = URL_WEEK; // При загрузке сайта показываем неделю
 
-        /* Шапка */
-        header { margin-bottom: 32px; text-align: center; }
-        .logo { font-weight: 800; font-size: 36px; letter-spacing: -1px; margin-bottom: 20px; line-height: 1.1; }
-        .logo div:first-child { color: var(--kz-color); }
-        .logo div:last-child { color: var(--ru-color); font-size: 24px; opacity: 0.8; }
-
-        /* Переключатель Неделя/Месяц */
-        .period-toggle {
-            display: inline-flex;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 100px;
-            padding: 4px;
-            margin-bottom: 16px;
-        }
-        .period-btn {
-            padding: 8px 24px;
-            border-radius: 100px;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--gray-text);
-        }
-        .period-btn.active { background: var(--ru-color); color: #FFF; }
-
-        .date-display { font-size: 14px; font-weight: 600; color: var(--gray-text); background: var(--card-bg); padding: 8px 16px; border-radius: 100px; display: inline-block; border: 1px solid var(--border-color);}
-        .date-display .kz { color: var(--kz-color); }
-
-        .section-title { font-size: 20px; font-weight: 800; margin-bottom: 16px; margin-top: 32px; display: flex; flex-direction: column; gap: 4px; }
-        .section-title .kz { color: var(--kz-color); }
-        .section-title .ru { font-size: 14px; font-weight: 600; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px;}
-
-        /* Аналитика (Растущие ниши) */
-        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 20px; }
-        .stat-list { list-style: none; }
-        .stat-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
-        .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .stat-name { display: flex; flex-direction: column; gap: 2px; }
-        .stat-name .kz { color: var(--kz-color); font-weight: 600; font-size: 15px;}
-        .stat-name .ru { color: var(--ru-color); font-size: 13px; }
-        .stat-value { font-weight: 800; font-size: 16px; color: var(--kz-color); background: rgba(180, 255, 135, 0.2); padding: 4px 10px; border-radius: 8px; }
-
-        /* Список товаров */
-        .products-list { display: flex; flex-direction: column; gap: 10px; }
-        
-        .product-card { 
-            background: var(--card-bg); border-radius: 12px; display: flex; align-items: center; padding: 10px; border: 1px solid var(--border-color); gap: 14px;
-            transition: transform 0.2s;
-        }
-        .product-card:active { transform: scale(0.98); }
-
-        .product-image { 
-            width: 60px; height: 60px; border-radius: 8px; background-size: cover; background-position: center; position: relative; flex-shrink: 0; background-color: #EFEFEF; display: flex; align-items: center; justify-content: center;
-        }
-        .product-image.no-image::after { content: "TEEZ"; font-size: 10px; font-weight: 800; color: #CCC; }
-
-        .product-rank { 
-            position: absolute; top: -6px; left: -6px; background: var(--ru-color); color: #FFF; font-weight: 800; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 11px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .product-info { display: flex; flex-direction: column; flex-grow: 1; justify-content: center; min-width: 0; }
-        .product-title { font-size: 14px; font-weight: 600; color: var(--ru-color); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .product-price { font-size: 15px; font-weight: 800; color: var(--kz-color); }
-
-        .buy-button { 
-            background: var(--accent-green); color: #000; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 12px; flex-shrink: 0;
-        }
-
-        /* Загрузка */
-        .loading { text-align: center; padding: 40px; color: var(--gray-text); font-weight: 600; font-size: 16px; }
-
-        footer { margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid var(--border-color); }
-    </style>
-</head>
-<body>
-
-    <div class="container" id="app">
-        <div class="loading">Загрузка данных... / Мәліметтер жүктелуде...</div>
-    </div>
-
-    <script>
-        // ---------------------------------------------------------
-        // 🔧 НАСТРОЙКИ: ССЫЛКИ НА GOOGLE ТАБЛИЦЫ (CSV)
-        // ---------------------------------------------------------
-        const URL_WEEK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBfJEdlHEmRSv3k8zBjfiZCyn3u0VZl17MicgV8ZSkmlLEb8BfS3-C2JokEfwX7FlDE5Yy2HDgmSUe/pub?gid=0&single=true&output=csv";
-        const URL_MONTH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBfJEdlHEmRSv3k8zBjfiZCyn3u0VZl17MicgV8ZSkmlLEb8BfS3-C2JokEfwX7FlDE5Yy2HDgmSUe/pub?gid=1833364113&single=true&output=csv";
-
-        // Статичные данные для аналитики (меняются вручную прямо тут при необходимости)
-        const ANALYTICS = {
-            week: {
-                dateKz: "Соңғы 7 күн", dateRu: "Последние 7 дней",
-                niches: [
-                    { kz: "Үйге арналған", ru: "Товары для дома", growth: "+145%" },
-                    { kz: "Киім және аяқ киім", ru: "Одежда и обувь", growth: "+80%" }
-                ]
-            },
-            month: {
-                dateKz: "Соңғы 30 күн", dateRu: "Последние 30 дней",
-                niches: [
-                    { kz: "Жазғы аяқ киім", ru: "Летняя обувь", growth: "+210%" },
-                    { kz: "Электроника", ru: "Электроника", growth: "+95%" }
-                ]
-            }
-        };
-
-        let currentPeriod = "week"; // По умолчанию открывается неделя
-        let cachedData = { week: null, month: null }; // Кэш, чтобы не качать таблицу дважды
-
-        // Парсер CSV
-        function parseCSV(str) {
-            const arr = [];
-            let quote = false;
-            let row = 0, col = 0;
-            for (let c = 0; c < str.length; c++) {
-                let cc = str[c], nc = str[c+1];
-                arr[row] = arr[row] || [];
-                arr[row][col] = arr[row][col] || '';
-                if (cc == '"' && quote && nc == '"') { arr[row][col] += cc; ++c; continue; }
-                if (cc == '"') { quote = !quote; continue; }
-                if (cc == ',' && !quote) { ++col; continue; }
-                if (cc == '\r' && nc == '\n' && !quote) { ++row; col = 0; ++c; continue; }
-                if (cc == '\n' && !quote) { ++row; col = 0; continue; }
-                if (cc == '\r' && !quote) { ++row; col = 0; continue; }
-                arr[row][col] += cc;
-            }
-            return arr;
-        }
-
-        async function loadData(period) {
-            currentPeriod = period;
-            const app = document.getElementById('app');
-
-            // Если данные уже скачаны, просто перерисовываем
-            if (cachedData[period]) {
-                renderHTML();
-                return;
-            }
-
-            app.innerHTML = `<div class="loading">Загрузка данных... / Мәліметтер жүктелуде...</div>`;
+        async function fetchData() {
+            // Включаем "скелетоны" загрузки, пока данные летят из таблицы
+            document.getElementById('niches-container').innerHTML = '<div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width: 80%"></div>';
+            document.getElementById('products-container').innerHTML = '<div class="product-card"><div class="skeleton" style="width:60px; height:60px; border-radius:8px;"></div><div style="flex:1"><div class="skeleton loading-shimmer" style="width:70%"></div><div class="skeleton loading-shimmer" style="width:40%"></div></div></div>';
 
             try {
-                const targetUrl = period === 'week' ? URL_WEEK : URL_MONTH;
+                const response = await fetch(currentUrl);
+                const data = await response.text();
                 
-                // Проверка: если ссылка не вставлена
-                if(targetUrl.includes("ВСТАВЬ_ССЫЛКУ")) {
-                    app.innerHTML = `<div class="loading" style="color: red;">Ошибка: Вставьте ссылку на CSV в код!</div>`;
-                    return;
-                }
+                // Разбиваем CSV на строки и колонки
+                const rows = data.split('\n').map(row => row.split(',').map(c => c.replace(/"/g, '').trim()));
 
-                const response = await fetch(targetUrl);
-                const csvText = await response.text();
-                
-                const parsedData = parseCSV(csvText);
-                
-                // Индексы на безопасном листе: 0-Название, 1-Цена, 2-URL картинки
-                const products = parsedData.slice(1).map(row => {
-                    if (!row || row.length < 2 || !row[0]) return null;
-                    
-                    // Форматирование цены (убираем пробелы, если есть, превращаем в число и обратно красиво)
-                    const rawPrice = parseInt(row[1].replace(/\D/g, '')) || 0;
-                    const formattedPrice = rawPrice.toLocaleString('ru-RU') + ' ₸';
+                // Берем первые 5 строк (Ниши)
+                const nichesData = rows.slice(0, 5).map(row => ({
+                    name: row[0],
+                    growth: row[1] || ""
+                })).filter(n => n.name);
 
-                    return {
-                        title: row[0].trim(),
-                        price: formattedPrice,
-                        image: row[2] ? row[2].trim() : "",
-                        link: "https://teez.kz"
-                    };
-                }).filter(Boolean).slice(0, 10); // Строго топ-10
+                // Пропускаем пустую строку и берем Топ-10 товаров (с 7-й строки)
+                const productsData = rows.slice(6).map(row => ({
+                    title: row[0],
+                    price: parseInt(row[1])?.toLocaleString('ru-RU') + ' ₸',
+                    img: row[2]
+                })).filter(p => p.title && p.img).slice(0, 10);
 
-                cachedData[period] = products; // Сохраняем в кэш
-                renderHTML();
-
-            } catch (error) {
-                console.error("Ошибка загрузки:", error);
-                app.innerHTML = `
-                    <header>
-                        <div class="period-toggle">
-                            <button class="period-btn ${currentPeriod === 'week' ? 'active' : ''}" onclick="loadData('week')">Неделя</button>
-                            <button class="period-btn ${currentPeriod === 'month' ? 'active' : ''}" onclick="loadData('month')">Месяц</button>
-                        </div>
-                    </header>
-                    <div class="loading" style="color: red;">Ошибка загрузки данных. Проверьте ссылку на таблицу.</div>
-                `;
+                renderNiches(nichesData);
+                renderProducts(productsData);
+            } catch (e) {
+                console.error("Ошибка загрузки данных из Google Таблицы:", e);
+                document.getElementById('niches-container').innerHTML = '<div style="color:red">Ошибка загрузки данных</div>';
             }
         }
 
-        function renderHTML() {
-            const app = document.getElementById('app');
-            const data = cachedData[currentPeriod];
-            const analytics = ANALYTICS[currentPeriod];
-            
-            let html = `
-                <header>
-                    <div class="logo">
-                        <div>TEEZ ТРЕНДТЕРІ</div>
-                        <div>ТРЕНДЫ TEEZ</div>
+        // Функция отрисовки ниш
+        function renderNiches(niches) {
+            const container = document.getElementById('niches-container');
+            container.innerHTML = niches.map(n => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #EAEAEA">
+                    <div style="color:var(--kz-color); font-weight:600; font-size:14px;">${n.name}</div>
+                    <div style="background:${n.growth.startsWith('+') ? 'rgba(180,255,135,0.3)' : 'rgba(255,135,135,0.2)'}; 
+                                padding:4px 10px; border-radius:8px; font-weight:800; 
+                                color:${n.growth.startsWith('+') ? 'var(--kz-color)' : '#D32F2F'}">
+                        ${n.growth}
                     </div>
-                    
-                    <div class="period-toggle">
-                        <button class="period-btn ${currentPeriod === 'week' ? 'active' : ''}" onclick="loadData('week')">Неделя</button>
-                        <button class="period-btn ${currentPeriod === 'month' ? 'active' : ''}" onclick="loadData('month')">Месяц</button>
-                    </div>
-
-                    <div class="date-display">
-                        <span class="kz">${analytics.dateKz}</span> | <span>${analytics.dateRu}</span>
-                    </div>
-                </header>
-
-                <div class="section-title">
-                    <span class="kz">Өсіп келе жатқан нишалар</span>
-                    <span class="ru">Растущие ниши</span>
                 </div>
-
-                <div class="stat-card">
-                    <ul class="stat-list">
-                        ${analytics.niches.map(niche => `
-                            <li class="stat-item">
-                                <div class="stat-name">
-                                    <span class="kz">${niche.kz}</span>
-                                    <span class="ru">${niche.ru}</span>
-                                </div>
-                                <div class="stat-value">${niche.growth}</div>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-
-                <div class="section-title">
-                    <span class="kz">ТОП-10 Тауар</span>
-                    <span class="ru">ТОП-10 Товаров</span>
-                </div>
-
-                <main class="products-list">
-                    ${generateProductsHTML(data)}
-                </main>
-
-                <footer>
-                    <div style="color: var(--kz-color); font-size: 13px; font-weight: 600;">© 2026 Teez Business. Барлық құқықтар қорғалған.</div>
-                    <div style="color: var(--gray-text); font-size: 12px; margin-top: 4px;">Все права защищены.</div>
-                </footer>
-            `;
-
-            app.innerHTML = html;
+            `).join('');
         }
 
-        function generateProductsHTML(products) {
-            if (!products || products.length === 0) return `<div style="padding: 20px; color: var(--gray-text);">Нет данных в таблице</div>`;
-            
-            return products.map((prod, index) => {
-                const bgStyle = prod.image ? `background-image: url('${prod.image}');` : '';
-                const imageClass = prod.image ? 'product-image' : 'product-image no-image';
-
-                return `
+        // Функция отрисовки товаров
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            container.innerHTML = products.map((p, i) => `
                 <div class="product-card">
-                    <div class="${imageClass}" style="${bgStyle}">
-                        <div class="product-rank">${index + 1}</div>
+                    <div class="product-image" style="background-image: url('${p.img}')">
+                        <div class="product-rank">${i+1}</div>
                     </div>
                     <div class="product-info">
-                        <div class="product-title" title="${prod.title}">${prod.title}</div>
-                        <div class="product-price">${prod.price}</div>
+                        <div class="product-title">${p.title}</div>
+                        <div class="product-price">${p.price}</div>
                     </div>
-                    <a href="${prod.link}" target="_blank" class="buy-button">Көру</a>
+                    <a href="#" class="buy-button">Көру</a>
                 </div>
-                `;
-            }).join('');
+            `).join('');
         }
 
-        // Запуск при открытии страницы (грузим неделю)
-        document.addEventListener('DOMContentLoaded', () => loadData('week'));
+        // Обработка кликов по кнопкам "Неделя" / "Месяц"
+        document.getElementById('btn-week').addEventListener('click', function() {
+            if(currentUrl === URL_WEEK) return; // Если уже открыта неделя - ничего не делаем
+            this.classList.add('active');
+            document.getElementById('btn-month').classList.remove('active');
+            currentUrl = URL_WEEK;
+            fetchData();
+        });
+
+        document.getElementById('btn-month').addEventListener('click', function() {
+            if(currentUrl === URL_MONTH) return; // Если уже открыт месяц - ничего не делаем
+            this.classList.add('active');
+            document.getElementById('btn-week').classList.remove('active');
+            currentUrl = URL_MONTH;
+            fetchData();
+        });
+
+        // Запуск при загрузке страницы
+        document.addEventListener('DOMContentLoaded', fetchData);
     </script>
-</body>
-</html>
