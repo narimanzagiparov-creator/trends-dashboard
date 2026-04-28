@@ -1,59 +1,246 @@
-<script>
-        // Твои правильные CSV-ссылки (я их уже поправил)
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналитика Трендов Teez</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --kz-color: #b4ff87; /* Фирменный зеленый Teez */
+            --bg-color: #0c0c0c;
+            --card-bg: #ffffff;
+            --text-main: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Urbanist', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+        }
+
+        .mobile-container {
+            width: 100%;
+            max-width: 480px;
+            background: #f8f9fa;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--bg-color);
+            padding: 25px 20px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            text-align: center;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 28px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--kz-color); }
+
+        /* Period Switcher */
+        .period-selector {
+            display: flex;
+            background: rgba(255,255,255,0.1);
+            padding: 5px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .period-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
+            color: #fff;
+            font-family: 'Urbanist', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .period-btn.active {
+            background: var(--kz-color);
+            color: #000;
+        }
+
+        /* Sections */
+        .section-title {
+            padding: 25px 20px 15px;
+            font-weight: 800;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .niche-box {
+            margin: 0 20px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Products Grid */
+        .products-list {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        .product-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .product-rank {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background: var(--kz-color);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #fff;
+        }
+
+        .product-info { flex: 1; }
+        .product-title { font-size: 14px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
+        .product-price { font-weight: 800; font-size: 16px; color: var(--text-main); }
+
+        .buy-button {
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #000;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* Skeletons */
+        .skeleton {
+            background: #eee;
+            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+            border-radius: 5px;
+            background-size: 200% 100%;
+            animation: 1.5s shine linear infinite;
+        }
+
+        @keyframes shine { to { background-position-x: -200%; } }
+
+        .loading-shimmer { height: 20px; margin-bottom: 10px; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        <div class="header">
+            <div class="logo">TEEZ <span>TRENDS</span></div>
+            <div class="period-selector">
+                <button class="period-btn active" id="btn-week">Неделя</button>
+                <button class="period-btn" id="btn-month">Месяц</button>
+            </div>
+        </div>
+
+        <div class="section-title">Растущие ниши 🚀</div>
+        <div class="niche-box" id="niches-container">
+            </div>
+
+        <div class="section-title">ТОП-10 товаров 🔥</div>
+        <div class="products-list" id="products-container">
+            </div>
+    </div>
+
+    <script>
+        // ТВОИ ССЫЛКИ
         const URL_WEEK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=csv&gid=2067344733";
         const URL_MONTH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=csv&gid=929155732";
 
-        let currentUrl = URL_WEEK; // При загрузке сайта показываем неделю
+        let currentUrl = URL_WEEK;
 
         async function fetchData() {
-            // Включаем "скелетоны" загрузки, пока данные летят из таблицы
-            document.getElementById('niches-container').innerHTML = '<div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width: 80%"></div>';
-            document.getElementById('products-container').innerHTML = '<div class="product-card"><div class="skeleton" style="width:60px; height:60px; border-radius:8px;"></div><div style="flex:1"><div class="skeleton loading-shimmer" style="width:70%"></div><div class="skeleton loading-shimmer" style="width:40%"></div></div></div>';
+            // Анимация загрузки
+            document.getElementById('niches-container').innerHTML = '<div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width:80%"></div>';
+            document.getElementById('products-container').innerHTML = '<div class="product-card"><div class="skeleton" style="width:70px; height:70px;"></div><div style="flex:1"><div class="skeleton loading-shimmer"></div></div></div>';
 
             try {
                 const response = await fetch(currentUrl);
                 const data = await response.text();
-                
-                // Разбиваем CSV на строки и колонки
                 const rows = data.split('\n').map(row => row.split(',').map(c => c.replace(/"/g, '').trim()));
 
-                // Берем первые 5 строк (Ниши)
+                // Ниши (строки 0-4)
                 const nichesData = rows.slice(0, 5).map(row => ({
                     name: row[0],
                     growth: row[1] || ""
-                })).filter(n => n.name);
+                })).filter(n => n.name && n.name !== "Ниша");
 
-                // Пропускаем пустую строку и берем Топ-10 товаров (с 7-й строки)
+                // Товары (строки 6+)
                 const productsData = rows.slice(6).map(row => ({
                     title: row[0],
-                    price: parseInt(row[1])?.toLocaleString('ru-RU') + ' ₸',
+                    price: row[1] ? parseInt(row[1]).toLocaleString('ru-RU') + ' ₸' : '',
                     img: row[2]
                 })).filter(p => p.title && p.img).slice(0, 10);
 
                 renderNiches(nichesData);
                 renderProducts(productsData);
             } catch (e) {
-                console.error("Ошибка загрузки данных из Google Таблицы:", e);
-                document.getElementById('niches-container').innerHTML = '<div style="color:red">Ошибка загрузки данных</div>';
+                console.error("Ошибка:", e);
             }
         }
 
-        // Функция отрисовки ниш
         function renderNiches(niches) {
             const container = document.getElementById('niches-container');
             container.innerHTML = niches.map(n => `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #EAEAEA">
-                    <div style="color:var(--kz-color); font-weight:600; font-size:14px;">${n.name}</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f0f0f0">
+                    <div style="font-weight:600; font-size:14px;">${n.name}</div>
                     <div style="background:${n.growth.startsWith('+') ? 'rgba(180,255,135,0.3)' : 'rgba(255,135,135,0.2)'}; 
-                                padding:4px 10px; border-radius:8px; font-weight:800; 
-                                color:${n.growth.startsWith('+') ? 'var(--kz-color)' : '#D32F2F'}">
+                                padding:4px 10px; border-radius:8px; font-weight:800; font-size:12px;
+                                color:${n.growth.startsWith('+') ? '#2E7D32' : '#D32F2F'}">
                         ${n.growth}
                     </div>
                 </div>
             `).join('');
         }
 
-        // Функция отрисовки товаров
         function renderProducts(products) {
             const container = document.getElementById('products-container');
             container.innerHTML = products.map((p, i) => `
@@ -65,14 +252,13 @@
                         <div class="product-title">${p.title}</div>
                         <div class="product-price">${p.price}</div>
                     </div>
-                    <a href="#" class="buy-button">Көру</a>
+                    <a href="${p.img}" target="_blank" class="buy-button">Көру</a>
                 </div>
             `).join('');
         }
 
-        // Обработка кликов по кнопкам "Неделя" / "Месяц"
         document.getElementById('btn-week').addEventListener('click', function() {
-            if(currentUrl === URL_WEEK) return; // Если уже открыта неделя - ничего не делаем
+            if(currentUrl === URL_WEEK) return;
             this.classList.add('active');
             document.getElementById('btn-month').classList.remove('active');
             currentUrl = URL_WEEK;
@@ -80,13 +266,14 @@
         });
 
         document.getElementById('btn-month').addEventListener('click', function() {
-            if(currentUrl === URL_MONTH) return; // Если уже открыт месяц - ничего не делаем
+            if(currentUrl === URL_MONTH) return;
             this.classList.add('active');
             document.getElementById('btn-week').classList.remove('active');
             currentUrl = URL_MONTH;
             fetchData();
         });
 
-        // Запуск при загрузке страницы
         document.addEventListener('DOMContentLoaded', fetchData);
     </script>
+</body>
+</html>
