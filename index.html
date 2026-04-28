@@ -23,30 +23,25 @@
             background-color: var(--bg-color);
             font-family: 'Urbanist', sans-serif;
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
         }
 
-        .mobile-container {
+        .main-container {
             width: 100%;
-            max-width: 480px;
-            background: #f8f9fa;
-            min-height: 100vh;
-            padding-bottom: 40px;
+            max-width: 1200px; /* Широкий экран */
+            margin: 0 auto;
+            padding: 0 20px 40px;
         }
 
         /* Header */
         .header {
             background-color: var(--bg-color);
-            padding: 25px 20px;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
+            padding: 40px 20px;
             text-align: center;
         }
 
         .logo {
             font-weight: 800;
-            font-size: 28px;
+            font-size: 36px;
             color: #fff;
             letter-spacing: -1px;
         }
@@ -57,19 +52,21 @@
         .period-selector {
             display: flex;
             background: rgba(255,255,255,0.1);
-            padding: 5px;
-            border-radius: 12px;
-            margin-top: 20px;
+            padding: 6px;
+            border-radius: 14px;
+            margin: 30px auto 0;
+            max-width: 400px;
         }
 
         .period-btn {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border: none;
             background: none;
             color: #fff;
             font-family: 'Urbanist', sans-serif;
             font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
             border-radius: 10px;
             transition: 0.3s;
@@ -82,84 +79,96 @@
 
         /* Sections */
         .section-title {
-            padding: 25px 20px 15px;
+            padding: 40px 0 20px;
             font-weight: 800;
-            font-size: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 24px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
         }
 
         .niche-box {
-            margin: 0 20px;
-            background: #fff;
+            background: #1a1a1a;
             border-radius: 20px;
-            padding: 15px 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 20px 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 800px;
         }
 
         /* Products Grid */
         .products-list {
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
         }
 
         .product-card {
-            background: #fff;
+            background: #1a1a1a;
             border-radius: 16px;
-            padding: 12px;
+            padding: 16px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            position: relative;
+            gap: 20px;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            background: #222;
         }
 
         .product-image {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             border-radius: 12px;
+            background-color: #2a2a2a; /* Цвет заглушки, если нет фото */
             background-size: cover;
             background-position: center;
             position: relative;
+            flex-shrink: 0;
         }
 
         .product-rank {
             position: absolute;
-            top: -5px;
-            left: -5px;
+            top: -8px;
+            left: -8px;
             background: var(--kz-color);
-            width: 22px;
-            height: 22px;
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 800;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid #fff;
+            border: 3px solid #1a1a1a;
+            color: #000;
         }
 
-        .product-info { flex: 1; }
-        .product-title { font-size: 14px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; }
-        .product-price { font-weight: 800; font-size: 16px; color: var(--text-main); }
+        .product-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .product-title { font-size: 15px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; color: #fff; }
+        .product-price { font-weight: 800; font-size: 18px; color: var(--kz-color); }
 
         .buy-button {
-            padding: 8px 16px;
-            background: #f0f0f0;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
             border-radius: 10px;
             text-decoration: none;
-            color: #000;
+            color: #fff;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .buy-button:hover {
+            background: var(--kz-color);
+            color: #000;
         }
 
         /* Skeletons */
         .skeleton {
-            background: #eee;
-            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+            background: #2a2a2a;
+            background: linear-gradient(110deg, #2a2a2a 8%, #3a3a3a 18%, #2a2a2a 33%);
             border-radius: 5px;
             background-size: 200% 100%;
             animation: 1.5s shine linear infinite;
@@ -172,87 +181,96 @@
 </head>
 <body>
 
-    <div class="mobile-container">
-        <div class="header">
-            <div class="logo">TEEZ <span>TRENDS</span></div>
-            <div class="period-selector">
-                <button class="period-btn active" id="btn-week">Неделя</button>
-                <button class="period-btn" id="btn-month">Месяц</button>
-            </div>
+    <div class="header">
+        <div class="logo">TEEZ <span>TRENDS</span></div>
+        <div class="period-selector">
+            <button class="period-btn active" id="btn-week">Апта / Неделя</button>
+            <button class="period-btn" id="btn-month">Ай / Месяц</button>
         </div>
+    </div>
 
-        <div class="section-title">Растущие ниши 🚀</div>
+    <div class="main-container">
+        <div class="section-title">Өсіп келе жатқан тауашалар / Растущие ниши</div>
         <div class="niche-box" id="niches-container">
             </div>
 
-        <div class="section-title">ТОП-10 товаров 🔥</div>
+        <div class="section-title">ТОП-10 тауар / ТОП-10 товаров</div>
         <div class="products-list" id="products-container">
             </div>
     </div>
 
     <script>
-        // ТВОИ ССЫЛКИ
-        const URL_WEEK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=csv&gid=2067344733";
-        const URL_MONTH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=csv&gid=929155732";
+        // ОБРАТИ ВНИМАНИЕ: Ссылки теперь заканчиваются на output=tsv
+        const URL_WEEK = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=tsv&gid=2067344733";
+        const URL_MONTH = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRpyea_eUAA1nfnJFtK7jrvnO6M3ny4aXSzFn7OO8bhQyHiA1pY74xH05p4AZQCWSR54N2JnfOq6_8X/pub?output=tsv&gid=929155732";
 
         let currentUrl = URL_WEEK;
 
         async function fetchData() {
             // Анимация загрузки
             document.getElementById('niches-container').innerHTML = '<div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width:80%"></div>';
-            document.getElementById('products-container').innerHTML = '<div class="product-card"><div class="skeleton" style="width:70px; height:70px;"></div><div style="flex:1"><div class="skeleton loading-shimmer"></div></div></div>';
+            document.getElementById('products-container').innerHTML = Array(10).fill('<div class="product-card"><div class="skeleton" style="width:90px; height:90px; border-radius:12px"></div><div style="flex:1"><div class="skeleton loading-shimmer"></div><div class="skeleton loading-shimmer" style="width:50%"></div></div></div>').join('');
 
             try {
-                const response = await fetch(currentUrl);
+                const response = await fetch(currentUrl, { cache: "no-store" });
                 const data = await response.text();
-                const rows = data.split('\n').map(row => row.split(',').map(c => c.replace(/"/g, '').trim()));
+                
+                // РАЗДЕЛИТЕЛЬ ИЗМЕНЕН НА \t (табуляция), чтобы не конфликтовать с запятыми в названиях
+                const rows = data.split('\n').map(row => row.split('\t').map(c => c.replace(/\r/g, '').replace(/"/g, '').trim()));
 
                 // Ниши (строки 0-4)
                 const nichesData = rows.slice(0, 5).map(row => ({
                     name: row[0],
                     growth: row[1] || ""
-                })).filter(n => n.name && n.name !== "Ниша");
+                })).filter(n => n.name && n.name !== "Ниша" && n.name !== "Растущая ниша");
 
                 // Товары (строки 6+)
                 const productsData = rows.slice(6).map(row => ({
                     title: row[0],
-                    price: row[1] ? parseInt(row[1]).toLocaleString('ru-RU') + ' ₸' : '',
-                    img: row[2]
-                })).filter(p => p.title && p.img).slice(0, 10);
+                    price: row[1] ? parseInt(row[1].replace(/\s/g, '')).toLocaleString('ru-RU') + ' ₸' : '',
+                    img: row[2] || '' // Если фото нет, будет пустая строка
+                })).filter(p => p.title).slice(0, 10);
 
                 renderNiches(nichesData);
                 renderProducts(productsData);
             } catch (e) {
                 console.error("Ошибка:", e);
+                document.getElementById('niches-container').innerHTML = '<div style="color:red">Деректерді жүктеу қатесі / Ошибка загрузки данных</div>';
+                document.getElementById('products-container').innerHTML = '';
             }
         }
 
         function renderNiches(niches) {
             const container = document.getElementById('niches-container');
             container.innerHTML = niches.map(n => `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #f0f0f0">
-                    <div style="font-weight:600; font-size:14px;">${n.name}</div>
-                    <div style="background:${n.growth.startsWith('+') ? 'rgba(180,255,135,0.3)' : 'rgba(255,135,135,0.2)'}; 
-                                padding:4px 10px; border-radius:8px; font-weight:800; font-size:12px;
-                                color:${n.growth.startsWith('+') ? '#2E7D32' : '#D32F2F'}">
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:15px 0; border-bottom:1px solid rgba(255,255,255,0.05)">
+                    <div style="font-weight:600; font-size:16px; color:#fff;">${n.name}</div>
+                    <div style="background:${n.growth.startsWith('+') ? 'rgba(180,255,135,0.15)' : 'rgba(255,135,135,0.15)'}; 
+                                padding:6px 12px; border-radius:8px; font-weight:800; font-size:14px;
+                                color:${n.growth.startsWith('+') ? 'var(--kz-color)' : '#ff6b6b'}">
                         ${n.growth}
                     </div>
                 </div>
             `).join('');
+            
+            // Убираем последнюю полоску у последнего элемента
+            if(container.lastElementChild) {
+                container.lastElementChild.style.borderBottom = 'none';
+            }
         }
 
         function renderProducts(products) {
             const container = document.getElementById('products-container');
             container.innerHTML = products.map((p, i) => `
                 <div class="product-card">
-                    <div class="product-image" style="background-image: url('${p.img}')">
+                    <div class="product-image" style="${p.img ? `background-image: url('${p.img}')` : ''}">
                         <div class="product-rank">${i+1}</div>
                     </div>
                     <div class="product-info">
                         <div class="product-title">${p.title}</div>
                         <div class="product-price">${p.price}</div>
                     </div>
-                    <a href="${p.img}" target="_blank" class="buy-button">Көру</a>
+                    ${p.img ? `<a href="${p.img}" target="_blank" class="buy-button">Көру</a>` : `<div class="buy-button" style="opacity:0.5; pointer-events:none">Фото жоқ</div>`}
                 </div>
             `).join('');
         }
